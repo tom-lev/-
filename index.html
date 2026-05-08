@@ -53,6 +53,7 @@
 </div>
 
 <script>
+    // קישורים לגיליונות ה-Google Sheets שלך
     const moldsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=0&single=true&output=csv";
     const materialsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=2012837645&single=true&output=csv";
 
@@ -69,26 +70,28 @@
             const textMolds = await resMolds.text();
             const textMats = await resMats.text();
 
+            // פירוק נתוני התבניות
             molds = parseCSV(textMolds).map(row => ({
                 name: row[0],
                 volume: parseFloat(row[1])
-            })).filter(item => !isNaN(item.volume) && item.name);
+            })).filter(item => item.name && !isNaN(item.volume));
 
+            // פירוק נתוני האבקות
             materials = parseCSV(textMats).map(row => ({
                 name: row[0],
                 wRatio: parseFloat(row[1]),
                 pRatio: parseFloat(row[2])
-            })).filter(item => !isNaN(item.wRatio) && item.name);
+            })).filter(item => item.name && !isNaN(item.wRatio));
 
             initApp();
         } catch (err) {
             document.getElementById('loader').innerText = "שגיאה בחיבור לנתונים. וודא שהגיליון פתוח לצפייה.";
+            console.error(err);
         }
     }
 
     function parseCSV(text) {
         return text.split('\n').slice(1).map(row => {
-            // טיפול בגרשיים אם יש בשמות
             return row.split(',').map(cell => cell.replace(/["']/g, "").trim());
         });
     }
@@ -100,7 +103,7 @@
         const mSelect = document.getElementById('moldSelect');
         const matSelect = document.getElementById('materialSelect');
 
-        // מיון תבניות לפי א-ב
+        // מיון אלפביתי של התבניות (עברית)
         molds.sort((a, b) => a.name.localeCompare(b.name, 'he'));
 
         mSelect.innerHTML = molds.map(m => `<option value="${m.volume}">${m.name} (${m.volume}g)</option>`).join('');
@@ -116,9 +119,10 @@
         const volume = parseFloat(document.getElementById('moldSelect').value);
         const [wRatio, pRatio] = document.getElementById('materialSelect').value.split('|').map(parseFloat);
 
-        if (volume && wRatio) {
-            const water = (volume * wRatio).toFixed(1);
-            const powder = (volume * pRatio).toFixed(1);
+        if (volume && !isNaN(wRatio) && !isNaN(pRatio)) {
+            // חישוב והצגה עם דיוק של 2 ספרות אחרי הנקודה
+            const water = (volume * wRatio).toFixed(2);
+            const powder = (volume * pRatio).toFixed(2);
 
             document.getElementById('waterVal').innerText = water + " גרם";
             document.getElementById('powderVal').innerText = powder + " גרם";
