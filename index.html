@@ -1,185 +1,343 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
-    <meta charset="UTF-8">
-    <title>מחשבון יציקה - גרסה מלאה</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root { --primary: #2980b9; --bg: #f4f7f6; --accent: #27ae60; }
-        body { font-family: system-ui, sans-serif; margin: 0; padding: 15px; background-color: var(--bg); display: flex; justify-content: center; }
-        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); width: 100%; max-width: 500px; }
-        h2 { text-align: center; color: #333; margin-bottom: 20px; }
-        
-        .section-title { font-weight: bold; margin: 15px 0 10px; display: block; color: #555; font-size: 14px; }
-        
-        /* כפתורי אבקה */
-        .grid-select { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .chip { padding: 12px; border: 2px solid #eaeeef; border-radius: 12px; text-align: center; cursor: pointer; background: #fff; transition: 0.2s; font-size: 14px; }
-        .chip.active { border-color: var(--primary); background: #eef7ff; color: var(--primary); font-weight: bold; }
-        
-        /* תצוגת תמונה */
-        .mold-preview { width: 100%; height: 200px; border-radius: 15px; background-color: #f0f0f0; margin-bottom: 10px; background-size: contain; background-repeat: no-repeat; background-position: center; display: none; border: 1px solid #ddd; }
+  <meta charset="UTF-8">
+  <title>מחשבון יציקה</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --surface2: #f0eeea;
+      --border: #e2e0da;
+      --border-strong: #c8c6c0;
+      --text: #1a1a18;
+      --text-muted: #72716c;
+      --text-dim: #aaa9a4;
+      --blue: #185FA5;
+      --blue-light: #EEF4FF;
+      --amber: #854F0B;
+      --amber-light: #FEF3E2;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
 
-        /* כפתור רכישה */
-        #buyBtn { display: none; width: 100%; padding: 10px; background-color: var(--accent); color: white; text-decoration: none; text-align: center; border-radius: 10px; margin-bottom: 15px; font-weight: bold; font-size: 14px; transition: opacity 0.2s; }
-        #buyBtn:hover { opacity: 0.9; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* קלט וחישוב */
-        .manual-input { width: 100%; padding: 15px; border: 2px solid #eaeeef; border-radius: 12px; font-size: 18px; box-sizing: border-box; text-align: center; margin-bottom: 10px; background: #fff; }
+    body {
+      font-family: 'Heebo', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 60px;
+      display: flex;
+      justify-content: center;
+    }
 
-        .result-box { margin-top: 25px; padding: 20px; background: #2c3e50; color: white; border-radius: 15px; text-align: center; }
-        .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-        .res-val { font-size: 26px; font-weight: bold; display: block; color: #3498db; }
-        
-        select { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #eee; margin-bottom: 15px; font-size: 16px; background: #fff; }
-        .loading { text-align: center; color: #999; padding: 30px; }
-    </style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600&display=swap');
+
+    .app { width: 100%; max-width: 540px; }
+
+    /* Header */
+    .header { text-align: center; padding: 32px 0 24px; }
+    .header-icon {
+      width: 52px; height: 52px;
+      border: 0.5px solid var(--border-strong);
+      border-radius: 14px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 14px;
+      background: var(--surface);
+    }
+    .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+    .header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    /* Section label */
+    .section-lbl {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--text-dim); margin: 24px 0 10px;
+    }
+
+    /* Chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font-size: 13px; padding: 7px 16px;
+      border-radius: 50px;
+      border: 0.5px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s;
+      font-family: inherit;
+    }
+    .chip:hover { border-color: var(--blue); color: var(--blue); }
+    .chip.on {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      color: var(--blue);
+      font-weight: 500;
+    }
+
+    /* Mold grid */
+    .mold-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .mold-card {
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer; overflow: hidden;
+      transition: border-color 0.15s;
+      position: relative;
+    }
+    .mold-card:hover { border-color: var(--border-strong); }
+    .mold-card.on { border: 2px solid var(--blue); }
+
+    .mold-thumb {
+      width: 100%; aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: var(--surface2);
+    }
+    .mold-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 0.25s;
+    }
+    .mold-card:hover .mold-thumb img { transform: scale(1.04); }
+    .mold-thumb-empty {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim);
+    }
+
+    .mold-body { padding: 9px 11px; }
+    .mold-name {
+      font-size: 12px; font-weight: 500;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text);
+    }
+    .mold-vol { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    .check-badge {
+      position: absolute; top: 6px; left: 6px;
+      width: 20px; height: 20px;
+      background: var(--blue); border-radius: 50%;
+      display: none; align-items: center; justify-content: center;
+    }
+    .mold-card.on .check-badge { display: flex; }
+
+    .link-badge {
+      position: absolute; top: 6px; right: 6px;
+      width: 26px; height: 26px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.15s;
+      text-decoration: none;
+      border: 0.5px solid var(--border);
+    }
+    .mold-card:hover .link-badge { opacity: 1; }
+
+    /* Volume input */
+    .vol-row {
+      display: flex; align-items: center; gap: 12px;
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      background: var(--surface);
+      transition: border-color 0.15s;
+    }
+    .vol-row:focus-within { border-color: var(--blue); }
+    .vol-lbl { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+    .vol-in {
+      flex: 1; border: none; outline: none;
+      font-size: 22px; font-weight: 500;
+      color: var(--text); font-family: inherit;
+      text-align: center; background: transparent;
+      direction: ltr;
+    }
+    .vol-unit { font-size: 13px; color: var(--text-muted); }
+
+    /* Results */
+    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .res-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 1rem; }
+    .res-lbl {
+      font-size: 12px; color: var(--text-muted);
+      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    }
+    .res-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .res-val { font-size: 26px; font-weight: 500; }
+    .res-unit-sm { font-size: 13px; color: var(--text-muted); margin-right: 3px; font-weight: 400; }
+
+    /* Loader */
+    .loader { text-align: center; padding: 60px 0; color: var(--text-muted); font-size: 14px; }
+    .spinner {
+      width: 30px; height: 30px;
+      border: 2px solid var(--border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      margin: 0 auto 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
+<div class="app">
 
-<div class="card">
-    <h2>מחשבון יציקה</h2>
-    
-    <div id="loader" class="loading">מתחבר לנתונים...</div>
+  <div class="header">
+    <div class="header-icon">🏺</div>
+    <h1>מחשבון יציקה</h1>
+    <p>חשב יחסי אבקה ומים לתבנית שלך</p>
+  </div>
 
-    <div id="mainContent" style="display: none;">
-        <span class="section-title">1. בחר אבקה:</span>
-        <div id="materialChips" class="grid-select"></div>
+  <div id="loader" class="loader">
+    <div class="spinner"></div>
+    מתחבר לנתונים...
+  </div>
 
-        <span class="section-title">2. בחר תבנית:</span>
-        <div id="moldImg" class="mold-preview"></div>
-        
-        <!-- כפתור רכישה שיופיע רק אם יש לינק -->
-        <a id="buyBtn" target="_blank">לינק לתבנית</a>
-        
-        <select id="moldSelect"></select>
+  <div id="main" style="display:none">
+    <div class="section-lbl">אבקה</div>
+    <div id="chips" class="chips"></div>
 
-        <span class="section-title">נפח מים בגרם:</span>
-        <input type="number" id="manualVolume" class="manual-input" placeholder="0" inputmode="decimal">
+    <div class="section-lbl">תבנית</div>
+    <div id="moldGrid" class="mold-grid"></div>
 
-        <div class="result-box">
-            <div class="result-grid">
-                <div>
-                    <span style="font-size: 13px; opacity: 0.8;">מים (גרם)</span>
-                    <span id="waterVal" class="res-val">0.00</span>
-                </div>
-                <div>
-                    <span style="font-size: 13px; opacity: 0.8;">אבקה (גרם)</span>
-                    <span id="powderVal" class="res-val">0.00</span>
-                </div>
-            </div>
-        </div>
+    <div class="section-lbl">נפח מים (גרם)</div>
+    <div class="vol-row">
+      <span class="vol-lbl">כמות</span>
+      <input type="number" id="vol" class="vol-in" placeholder="0" inputmode="decimal">
+      <span class="vol-unit">גרם</span>
     </div>
+
+    <div class="section-lbl">תוצאה</div>
+    <div class="results">
+      <div class="res-card">
+        <div class="res-lbl">
+          <span class="res-dot" style="background:#378ADD"></span>מים
+        </div>
+        <div>
+          <span id="waterVal" class="res-val" style="color:#185FA5">0.00</span>
+          <span class="res-unit-sm">גרם</span>
+        </div>
+      </div>
+      <div class="res-card">
+        <div class="res-lbl">
+          <span class="res-dot" style="background:#EF9F27"></span>אבקה
+        </div>
+        <div>
+          <span id="powderVal" class="res-val" style="color:#854F0B">0.00</span>
+          <span class="res-unit-sm">גרם</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-    const moldsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=0&single=true&output=csv";
-    const materialsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=2012837645&single=true&output=csv";
+const MOLDS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=0&single=true&output=csv";
+const MATS_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=2012837645&single=true&output=csv";
 
-    let molds = [];
-    let materials = [];
-    let selectedMaterial = null;
+let selectedMat = null;
 
-    async function loadData() {
-        try {
-            const [resMolds, resMats] = await Promise.all([fetch(moldsURL), fetch(materialsURL)]);
-            const textMolds = await resMolds.text();
-            const textMats = await resMats.text();
+function parseCSV(text) {
+  return text.split('\n').slice(1)
+    .map(r => r.split(',').map(c => c.replace(/["']/g, '').trim()))
+    .filter(r => r.some(c => c));
+}
 
-            molds = parseCSV(textMolds).map(row => ({ 
-                name: row[0], 
-                volume: parseFloat(row[1]),
-                img: row[2] || "",
-                link: row[3] || "" // עמודה רביעית - לינק לרכישה
-            })).filter(item => item.name && !isNaN(item.volume));
-            
-            materials = parseCSV(textMats).map(row => ({ 
-                name: row[0], 
-                wRatio: parseFloat(row[1]), 
-                pRatio: parseFloat(row[2]) 
-            })).filter(item => item.name && !isNaN(item.wRatio));
+async function init() {
+  try {
+    const [r1, r2] = await Promise.all([fetch(MOLDS_URL), fetch(MATS_URL)]);
+    const [t1, t2] = await Promise.all([r1.text(), r2.text()]);
 
-            initApp();
-        } catch (err) {
-            document.getElementById('loader').innerText = "שגיאה בטעינת נתונים.";
-        }
-    }
+    const molds = parseCSV(t1)
+      .map(r => ({ name: r[0], vol: parseFloat(r[1]), img: r[2] || '', link: r[3] || '' }))
+      .filter(m => m.name && !isNaN(m.vol));
 
-    function parseCSV(text) {
-        return text.split('\n').slice(1).map(row => row.split(',').map(cell => cell.replace(/["']/g, "").trim()));
-    }
+    const mats = parseCSV(t2)
+      .map(r => ({ name: r[0], w: parseFloat(r[1]), p: parseFloat(r[2]) }))
+      .filter(m => m.name && !isNaN(m.w));
 
-    function initApp() {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
 
-        const chipsContainer = document.getElementById('materialChips');
-        materials.forEach((mat, index) => {
-            const chip = document.createElement('div');
-            chip.className = 'chip' + (index === 0 ? ' active' : '');
-            chip.innerText = mat.name;
-            if(index === 0) selectedMaterial = mat;
-            chip.onclick = () => {
-                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                selectedMaterial = mat;
-                calculate();
-            };
-            chipsContainer.appendChild(chip);
-        });
+    // Material chips
+    const chipsEl = document.getElementById('chips');
+    mats.forEach((m, i) => {
+      const b = document.createElement('button');
+      b.className = 'chip' + (i === 0 ? ' on' : '');
+      b.textContent = m.name;
+      if (i === 0) selectedMat = m;
+      b.onclick = () => {
+        chipsEl.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+        b.classList.add('on');
+        selectedMat = m;
+        calc();
+      };
+      chipsEl.appendChild(b);
+    });
 
-        const mSelect = document.getElementById('moldSelect');
-        molds.sort((a, b) => a.name.localeCompare(b.name, 'he'));
-        
-        mSelect.innerHTML = '<option value="" data-img="" data-link="">-- בחר תבנית --</option>' + 
-                          molds.map(m => `<option value="${m.volume}" data-img="${m.img}" data-link="${m.link}">${m.name}</option>`).join('');
+    // Mold grid
+    const grid = document.getElementById('moldGrid');
+    molds.sort((a, b) => a.name.localeCompare(b.name, 'he'));
 
-        mSelect.onchange = () => {
-            const selectedOption = mSelect.options[mSelect.selectedIndex];
-            const imgUrl = selectedOption.getAttribute('data-img');
-            const buyLink = selectedOption.getAttribute('data-link');
-            
-            const preview = document.getElementById('moldImg');
-            const buyBtn = document.getElementById('buyBtn');
-            
-            // הצגת תמונה
-            if(imgUrl && imgUrl.length > 5) {
-                preview.style.backgroundImage = `url('${imgUrl}')`;
-                preview.style.display = 'block';
-            } else {
-                preview.style.display = 'none';
-            }
+    molds.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'mold-card';
 
-            // הצגת כפתור רכישה
-            if(buyLink && buyLink.length > 5) {
-                buyBtn.href = buyLink;
-                buyBtn.style.display = 'block';
-            } else {
-                buyBtn.style.display = 'none';
-            }
+      const thumb = m.img && m.img.length > 5
+        ? `<img src="${m.img}" alt="${m.name}" loading="lazy">`
+        : `<div class="mold-thumb-empty"><i class="ti ti-box" style="font-size:30px" aria-hidden="true"></i></div>`;
 
-            if(mSelect.value) {
-                document.getElementById('manualVolume').value = mSelect.value;
-                calculate();
-            }
-        };
+      const linkBadge = m.link && m.link.length > 5
+        ? `<a class="link-badge" href="${m.link}" target="_blank" onclick="event.stopPropagation()" aria-label="לינק לרכישת תבנית">
+             <i class="ti ti-external-link" style="font-size:13px;color:#185FA5" aria-hidden="true"></i>
+           </a>`
+        : '';
 
-        document.getElementById('manualVolume').oninput = calculate;
-        calculate();
-    }
+      card.innerHTML = `
+        <div class="mold-thumb">${thumb}</div>
+        <div class="check-badge">
+          <i class="ti ti-check" style="font-size:12px;color:white" aria-hidden="true"></i>
+        </div>
+        ${linkBadge}
+        <div class="mold-body">
+          <div class="mold-name">${m.name}</div>
+          <div class="mold-vol">${m.vol} גרם</div>
+        </div>
+      `;
 
-    function calculate() {
-        const volume = parseFloat(document.getElementById('manualVolume').value) || 0;
-        if (selectedMaterial && volume > 0) {
-            document.getElementById('waterVal').innerText = (volume * selectedMaterial.wRatio).toFixed(2);
-            document.getElementById('powderVal').innerText = (volume * selectedMaterial.pRatio).toFixed(2);
-        } else {
-            document.getElementById('waterVal').innerText = "0.00";
-            document.getElementById('powderVal').innerText = "0.00";
-        }
-    }
+      card.onclick = () => {
+        grid.querySelectorAll('.mold-card').forEach(x => x.classList.remove('on'));
+        card.classList.add('on');
+        document.getElementById('vol').value = m.vol;
+        calc();
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      };
 
-    loadData();
+      grid.appendChild(card);
+    });
+
+    document.getElementById('vol').oninput = calc;
+    calc();
+
+  } catch (e) {
+    document.getElementById('loader').innerHTML = '❌ שגיאה בטעינת נתונים';
+  }
+}
+
+function calc() {
+  const v = parseFloat(document.getElementById('vol').value) || 0;
+  document.getElementById('waterVal').textContent  = selectedMat && v > 0 ? (v * selectedMat.w).toFixed(2) : '0.00';
+  document.getElementById('powderVal').textContent = selectedMat && v > 0 ? (v * selectedMat.p).toFixed(2) : '0.00';
+}
+
+init();
 </script>
 </body>
 </html>
