@@ -3,191 +3,320 @@
 <head>
   <meta charset="UTF-8">
   <title>מחשבון יציקה</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    :root {
-      --bg: #f5f4f0;
-      --surface: #ffffff;
-      --surface2: #f0eeea;
-      --border: #e2e0da;
-      --border-strong: #c8c6c0;
-      --text: #1a1a18;
-      --text-muted: #72716c;
-      --text-dim: #aaa9a4;
-      --blue: #185FA5;
-      --blue-light: #EEF4FF;
-      --amber: #854F0B;
-      --amber-light: #FEF3E2;
-      --radius: 14px;
-      --radius-sm: 8px;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f4f7f6;
+      --card: #ffffff;
+      --surface: #f8fafa;
+      --primary: #2980b9;
+      --primary-light: #eaf4fb;
+      --primary-dark: #1f6692;
+      --accent: #27ae60;
+      --accent-light: #eafaf1;
+      --text-h: #333333;
+      --text-b: #666666;
+      --text-dim: #aaaaaa;
+      --border: rgba(0,0,0,0.07);
+      --border-soft: rgba(0,0,0,0.10);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+      --shadow-primary: 0 4px 16px rgba(41,128,185,0.25);
+      --shadow-accent: 0 4px 16px rgba(39,174,96,0.25);
+      --r-sm: 12px;
+      --r-md: 16px;
+      --r-lg: 20px;
+      --r-xl: 24px;
+    }
 
     body {
       font-family: 'Heebo', system-ui, sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color: var(--text-h);
       min-height: 100vh;
-      padding: 24px 16px 60px;
-      display: flex;
-      justify-content: center;
+      padding: 0 0 60px;
+      direction: rtl;
     }
 
-    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600&display=swap');
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
 
-    .app { width: 100%; max-width: 540px; }
-
-    /* Header */
-    .header { text-align: center; padding: 32px 0 24px; }
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
     .header-icon {
-      width: 52px; height: 52px;
-      border: 0.5px solid var(--border-strong);
-      border-radius: 14px;
+      width: 56px; height: 56px;
+      background: var(--primary-light);
+      border-radius: 18px;
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 24px; margin-bottom: 14px;
-      background: var(--surface);
+      font-size: 26px; margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
     }
-    .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
-    .header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .header h1 { font-size: 22px; font-weight: 700; color: var(--text-h); letter-spacing: -0.4px; }
+    .header p  { font-size: 13px; color: var(--text-b); margin-top: 4px; }
 
-    /* Section label */
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-md);
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
     .section-lbl {
-      font-size: 11px; font-weight: 500;
-      letter-spacing: 0.07em; text-transform: uppercase;
-      color: var(--text-dim); margin: 24px 0 10px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 10px;
     }
 
-    /* Chips */
+    /* ── Chips ── */
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
-      font-size: 13px; padding: 7px 16px;
+      font-size: 13px; padding: 8px 16px;
       border-radius: 50px;
-      border: 0.5px solid var(--border-strong);
+      border: 1.5px solid var(--border-soft);
       background: var(--surface);
-      color: var(--text-muted);
-      cursor: pointer; transition: all 0.15s;
-      font-family: inherit;
+      color: var(--text-b);
+      cursor: pointer; transition: all 0.18s;
+      font-family: 'Heebo', inherit; line-height: 1;
+      min-height: 44px; display: flex; align-items: center;
+      box-shadow: var(--shadow-sm);
     }
-    .chip:hover { border-color: var(--blue); color: var(--blue); }
+    .chip:active { transform: scale(0.96); }
     .chip.on {
-      background: var(--blue-light);
-      border-color: var(--blue);
-      color: var(--blue);
-      font-weight: 500;
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: var(--shadow-primary);
     }
 
-    /* Mold grid */
-    .mold-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 10px;
-    }
-    .mold-card {
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius);
+    /* ── Picker button ── */
+    .picker-btn {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      min-height: 60px;
       background: var(--surface);
-      cursor: pointer; overflow: hidden;
-      transition: border-color 0.15s;
-      position: relative;
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--r-md);
+      cursor: pointer; transition: all 0.18s;
+      font-family: 'Heebo', inherit;
+      box-shadow: var(--shadow-sm);
+      gap: 12px;
     }
-    .mold-card:hover { border-color: var(--border-strong); }
-    .mold-card.on { border: 2px solid var(--blue); }
+    .picker-btn:active { transform: scale(0.99); }
+    .picker-btn.has-value {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
 
-    .mold-thumb {
-      width: 100%; aspect-ratio: 1 / 1;
-      overflow: hidden;
-      background: var(--surface2);
-    }
-    .mold-thumb img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center;
-      display: block;
-      transition: transform 0.25s;
-    }
-    .mold-card:hover .mold-thumb img { transform: scale(1.04); }
-    .mold-thumb-empty {
-      width: 100%; height: 100%;
+    .picker-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .picker-thumb {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: var(--r-sm); overflow: hidden;
+      background: #eee;
       display: flex; align-items: center; justify-content: center;
-      color: var(--text-dim);
+      box-shadow: var(--shadow-sm);
     }
+    .picker-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .picker-thumb-empty { color: var(--text-dim); font-size: 20px; }
+    .picker-text { min-width: 0; text-align: right; }
+    .picker-label { font-size: 11px; color: var(--text-dim); margin-bottom: 2px; }
+    .picker-value { font-size: 14px; font-weight: 600; color: var(--text-h); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .picker-value.placeholder { color: var(--text-b); font-weight: 400; }
+    .picker-arrow { color: var(--text-dim); flex-shrink: 0; font-size: 18px; transition: transform 0.2s; }
+    .sheet.open ~ * .picker-arrow { transform: rotate(180deg); }
 
-    .mold-body { padding: 9px 11px; }
-    .mold-name {
-      font-size: 12px; font-weight: 500;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      color: var(--text);
-    }
-    .mold-vol { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-    .check-badge {
-      position: absolute; top: 6px; left: 6px;
-      width: 20px; height: 20px;
-      background: var(--blue); border-radius: 50%;
-      display: none; align-items: center; justify-content: center;
-    }
-    .mold-card.on .check-badge { display: flex; }
-
-    .link-badge {
-      position: absolute; top: 6px; right: 6px;
-      width: 26px; height: 26px;
-      background: rgba(255,255,255,0.9);
-      border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity 0.15s;
-      text-decoration: none;
-      border: 0.5px solid var(--border);
-    }
-    .mold-card:hover .link-badge { opacity: 1; }
-
-    /* Volume input */
+    /* ── Volume input ── */
     .vol-row {
       display: flex; align-items: center; gap: 12px;
-      border: 0.5px solid var(--border-strong);
-      border-radius: var(--radius);
-      padding: 10px 16px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--r-md);
+      padding: 0 16px;
+      min-height: 60px;
       background: var(--surface);
-      transition: border-color 0.15s;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      box-shadow: var(--shadow-sm);
     }
-    .vol-row:focus-within { border-color: var(--blue); }
-    .vol-lbl { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+    .vol-row:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
+    }
+    .vol-lbl { font-size: 13px; color: var(--text-b); white-space: nowrap; }
     .vol-in {
       flex: 1; border: none; outline: none;
-      font-size: 22px; font-weight: 500;
-      color: var(--text); font-family: inherit;
+      font-size: 24px; font-weight: 600;
+      color: var(--text-h); font-family: 'Heebo', inherit;
       text-align: center; background: transparent;
-      direction: ltr;
+      direction: ltr; min-height: 44px;
     }
-    .vol-unit { font-size: 13px; color: var(--text-muted); }
+    .vol-unit { font-size: 13px; color: var(--text-b); }
 
-    /* Results */
-    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .res-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 1rem; }
-    .res-lbl {
-      font-size: 12px; color: var(--text-muted);
-      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    /* ── Results ── */
+    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .res-card {
+      border-radius: var(--r-md); padding: 16px;
+      display: flex; flex-direction: column; gap: 6px;
     }
-    .res-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-    .res-val { font-size: 26px; font-weight: 500; }
-    .res-unit-sm { font-size: 13px; color: var(--text-muted); margin-right: 3px; font-weight: 400; }
+    .res-card.water { background: #eaf4fb; }
+    .res-card.powder { background: #fef9ee; }
+    .res-lbl { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .res-card.water  .res-lbl { color: var(--primary-dark); }
+    .res-card.powder .res-lbl { color: #b7770d; }
+    .res-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .res-val { font-size: 30px; font-weight: 700; line-height: 1; }
+    .res-card.water  .res-val { color: var(--primary); }
+    .res-card.powder .res-val { color: #e67e22; }
+    .res-unit-sm { font-size: 12px; color: var(--text-b); font-weight: 400; }
 
-    /* Loader */
-    .loader { text-align: center; padding: 60px 0; color: var(--text-muted); font-size: 14px; }
+    /* ── Loader ── */
+    .loader { text-align: center; padding: 60px 0; color: var(--text-b); font-size: 14px; }
     .spinner {
       width: 30px; height: 30px;
-      border: 2px solid var(--border);
-      border-top-color: var(--blue);
+      border: 2.5px solid var(--border-soft);
+      border-top-color: var(--primary);
       border-radius: 50%;
       animation: spin 0.75s linear infinite;
-      margin: 0 auto 14px;
+      margin: 0 auto 12px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Bottom Sheet ── */
+    .sheet-overlay {
+      position: fixed; inset: 0;
+      background: rgba(30,40,50,0.4);
+      z-index: 100;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .sheet-overlay.open { opacity: 1; pointer-events: all; }
+
+    .sheet {
+      position: fixed; bottom: 0; right: 0; left: 0;
+      background: var(--card);
+      border-radius: 24px 24px 0 0;
+      z-index: 101;
+      max-height: 82vh;
+      display: flex; flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+      direction: rtl;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.14);
+    }
+    .sheet.open { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 40px; height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin: 10px auto 0;
+      flex-shrink: 0;
+    }
+    .sheet-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px 10px;
+      flex-shrink: 0;
+    }
+    .sheet-title { font-size: 17px; font-weight: 700; color: var(--text-h); }
+    .sheet-close {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: none; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 16px; color: var(--text-b);
+      font-family: inherit; box-shadow: var(--shadow-sm);
+      transition: background 0.15s;
+    }
+    .sheet-close:active { background: #e0e0e0; }
+
+    .sheet-search-wrap { padding: 0 16px 10px; flex-shrink: 0; }
+    .search-wrap-inner { position: relative; }
+    .sheet-search {
+      width: 100%; padding: 11px 38px 11px 14px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--r-md);
+      font-size: 14px; font-family: 'Heebo', inherit;
+      background: var(--surface);
+      color: var(--text-h); outline: none;
+      direction: rtl;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .sheet-search:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
+    }
+    .search-icon {
+      position: absolute; top: 50%; right: 12px;
+      transform: translateY(-50%);
+      font-size: 16px; color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .sheet-list {
+      overflow-y: auto; flex: 1;
+      padding: 4px 16px 24px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .sheet-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 10px;
+      border-radius: var(--r-sm);
+      cursor: pointer; transition: background 0.12s;
+      margin-bottom: 2px;
+    }
+    .sheet-item:active { background: var(--bg); }
+    .sheet-item.on { background: var(--primary-light); }
+
+    .item-thumb {
+      width: 54px; height: 54px; flex-shrink: 0;
+      border-radius: var(--r-sm); overflow: hidden;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+    }
+    .item-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .item-thumb-empty { font-size: 22px; color: var(--text-dim); }
+
+    .item-text { flex: 1; min-width: 0; }
+    .item-name { font-size: 14px; font-weight: 600; color: var(--text-h); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-vol  { font-size: 12px; color: var(--text-b); margin-top: 2px; }
+
+    .item-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .item-check { font-size: 20px; color: var(--primary); opacity: 0; transition: opacity 0.15s; }
+    .sheet-item.on .item-check { opacity: 1; }
+
+    .item-link {
+      width: 34px; height: 34px;
+      border-radius: var(--r-sm);
+      border: 1.5px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 15px; color: var(--accent);
+      background: var(--accent-light);
+      transition: background 0.15s;
+    }
+    .item-link:active { background: #d5f5e3; }
+
+    .sheet-empty { text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 14px; }
+
+    .divider { height: 1px; background: var(--border); margin: 4px 0; }
   </style>
 </head>
 <body>
-<div class="app">
 
+<div class="app">
   <div class="header">
     <div class="header-icon">🏺</div>
     <h1>מחשבון יציקה</h1>
@@ -200,42 +329,78 @@
   </div>
 
   <div id="main" style="display:none">
-    <div class="section-lbl">אבקה</div>
-    <div id="chips" class="chips"></div>
 
-    <div class="section-lbl">תבנית</div>
-    <div id="moldGrid" class="mold-grid"></div>
-
-    <div class="section-lbl">נפח מים (גרם)</div>
-    <div class="vol-row">
-      <span class="vol-lbl">כמות</span>
-      <input type="number" id="vol" class="vol-in" placeholder="0" inputmode="decimal">
-      <span class="vol-unit">גרם</span>
+    <div class="card">
+      <div class="section-lbl">אבקה</div>
+      <div id="chips" class="chips"></div>
     </div>
 
-    <div class="section-lbl">תוצאה</div>
-    <div class="results">
-      <div class="res-card">
-        <div class="res-lbl">
-          <span class="res-dot" style="background:#378ADD"></span>מים
+    <div class="card">
+      <div class="section-lbl">תבנית</div>
+      <button class="picker-btn" id="pickerBtn" onclick="openSheet()">
+        <div class="picker-left">
+          <div class="picker-thumb" id="pickerThumb">
+            <i class="ti ti-box picker-thumb-empty" aria-hidden="true"></i>
+          </div>
+          <div class="picker-text">
+            <div class="picker-label">תבנית נבחרת</div>
+            <div class="picker-value placeholder" id="pickerValue">לחץ לבחירה...</div>
+          </div>
         </div>
-        <div>
-          <span id="waterVal" class="res-val" style="color:#185FA5">0.00</span>
+        <i class="ti ti-chevron-down picker-arrow" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="section-lbl">נפח מים (גרם)</div>
+      <div class="vol-row">
+        <span class="vol-lbl">כמות</span>
+        <input type="number" id="vol" class="vol-in" placeholder="0" inputmode="decimal">
+        <span class="vol-unit">גרם</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-lbl">תוצאה</div>
+      <div class="results">
+        <div class="res-card water">
+          <div class="res-lbl">
+            <span class="res-dot" style="background:#2980b9"></span>מים
+          </div>
+          <span id="waterVal" class="res-val">—</span>
+          <span class="res-unit-sm">גרם</span>
+        </div>
+        <div class="res-card powder">
+          <div class="res-lbl">
+            <span class="res-dot" style="background:#e67e22"></span>אבקה
+          </div>
+          <span id="powderVal" class="res-val">—</span>
           <span class="res-unit-sm">גרם</span>
         </div>
       </div>
-      <div class="res-card">
-        <div class="res-lbl">
-          <span class="res-dot" style="background:#EF9F27"></span>אבקה
-        </div>
-        <div>
-          <span id="powderVal" class="res-val" style="color:#854F0B">0.00</span>
-          <span class="res-unit-sm">גרם</span>
-        </div>
-      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Bottom Sheet -->
+<div class="sheet-overlay" id="overlay" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <span class="sheet-title">בחר תבנית</span>
+    <button class="sheet-close" onclick="closeSheet()" aria-label="סגור">
+      <i class="ti ti-x" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="sheet-search-wrap">
+    <div class="search-wrap-inner">
+      <input type="search" id="searchInput" class="sheet-search"
+             placeholder="חיפוש לפי שם..." oninput="filterMolds(this.value)">
+      <i class="ti ti-search search-icon" aria-hidden="true"></i>
     </div>
   </div>
-
+  <div class="sheet-list" id="sheetList"></div>
 </div>
 
 <script>
@@ -243,6 +408,8 @@ const MOLDS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrc
 const MATS_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=2012837645&single=true&output=csv";
 
 let selectedMat = null;
+let selectedMold = null;
+let allMolds = [];
 
 function parseCSV(text) {
   return text.split('\n').slice(1)
@@ -255,9 +422,10 @@ async function init() {
     const [r1, r2] = await Promise.all([fetch(MOLDS_URL), fetch(MATS_URL)]);
     const [t1, t2] = await Promise.all([r1.text(), r2.text()]);
 
-    const molds = parseCSV(t1)
+    allMolds = parseCSV(t1)
       .map(r => ({ name: r[0], vol: parseFloat(r[1]), img: r[2] || '', link: r[3] || '' }))
-      .filter(m => m.name && !isNaN(m.vol));
+      .filter(m => m.name && !isNaN(m.vol))
+      .sort((a, b) => a.name.localeCompare(b.name, 'he'));
 
     const mats = parseCSV(t2)
       .map(r => ({ name: r[0], w: parseFloat(r[1]), p: parseFloat(r[2]) }))
@@ -266,7 +434,6 @@ async function init() {
     document.getElementById('loader').style.display = 'none';
     document.getElementById('main').style.display = 'block';
 
-    // Material chips
     const chipsEl = document.getElementById('chips');
     mats.forEach((m, i) => {
       const b = document.createElement('button');
@@ -282,59 +449,88 @@ async function init() {
       chipsEl.appendChild(b);
     });
 
-    // Mold grid
-    const grid = document.getElementById('moldGrid');
-    molds.sort((a, b) => a.name.localeCompare(b.name, 'he'));
-
-    molds.forEach(m => {
-      const card = document.createElement('div');
-      card.className = 'mold-card';
-
-      const thumb = m.img && m.img.length > 5
-        ? `<img src="${m.img}" alt="${m.name}" loading="lazy">`
-        : `<div class="mold-thumb-empty"><i class="ti ti-box" style="font-size:30px" aria-hidden="true"></i></div>`;
-
-      const linkBadge = m.link && m.link.length > 5
-        ? `<a class="link-badge" href="${m.link}" target="_blank" onclick="event.stopPropagation()" aria-label="לינק לרכישת תבנית">
-             <i class="ti ti-external-link" style="font-size:13px;color:#185FA5" aria-hidden="true"></i>
-           </a>`
-        : '';
-
-      card.innerHTML = `
-        <div class="mold-thumb">${thumb}</div>
-        <div class="check-badge">
-          <i class="ti ti-check" style="font-size:12px;color:white" aria-hidden="true"></i>
-        </div>
-        ${linkBadge}
-        <div class="mold-body">
-          <div class="mold-name">${m.name}</div>
-          <div class="mold-vol">${m.vol} גרם</div>
-        </div>
-      `;
-
-      card.onclick = () => {
-        grid.querySelectorAll('.mold-card').forEach(x => x.classList.remove('on'));
-        card.classList.add('on');
-        document.getElementById('vol').value = m.vol;
-        calc();
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      };
-
-      grid.appendChild(card);
-    });
-
+    renderSheetList(allMolds);
     document.getElementById('vol').oninput = calc;
     calc();
-
   } catch (e) {
-    document.getElementById('loader').innerHTML = '❌ שגיאה בטעינת נתונים';
+    document.getElementById('loader').innerHTML =
+      '<i class="ti ti-alert-circle" style="font-size:26px;color:#e74c3c;display:block;margin:0 auto 8px"></i>שגיאה בטעינת נתונים';
   }
+}
+
+function renderSheetList(molds) {
+  const list = document.getElementById('sheetList');
+  if (!molds.length) {
+    list.innerHTML = '<div class="sheet-empty">לא נמצאו תבניות</div>';
+    return;
+  }
+  list.innerHTML = molds.map(m => {
+    const thumb = m.img && m.img.length > 5
+      ? `<img src="${m.img}" alt="${m.name}" loading="lazy">`
+      : `<i class="ti ti-box item-thumb-empty" aria-hidden="true"></i>`;
+    const link = m.link && m.link.length > 5
+      ? `<a class="item-link" href="${m.link}" target="_blank"
+           onclick="event.stopPropagation()" aria-label="לינק לרכישה">
+           <i class="ti ti-external-link" aria-hidden="true"></i></a>`
+      : '';
+    const isOn = selectedMold && selectedMold.name === m.name ? ' on' : '';
+    const mJson = JSON.stringify(m).replace(/"/g, '&quot;');
+    return `<div class="sheet-item${isOn}" onclick="selectMold(${mJson})">
+      <div class="item-thumb">${thumb}</div>
+      <div class="item-text">
+        <div class="item-name">${m.name}</div>
+        <div class="item-vol">${m.vol} גרם</div>
+      </div>
+      <div class="item-right">
+        ${link}
+        <i class="ti ti-circle-check item-check" aria-hidden="true"></i>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterMolds(q) {
+  const filtered = q.trim() ? allMolds.filter(m => m.name.includes(q)) : allMolds;
+  renderSheetList(filtered);
+}
+
+function selectMold(m) {
+  selectedMold = m;
+
+  const btn = document.getElementById('pickerBtn');
+  btn.classList.add('has-value');
+
+  const thumb = document.getElementById('pickerThumb');
+  thumb.innerHTML = m.img && m.img.length > 5
+    ? `<img src="${m.img}" alt="${m.name}">`
+    : `<i class="ti ti-box picker-thumb-empty" aria-hidden="true"></i>`;
+
+  const val = document.getElementById('pickerValue');
+  val.textContent = m.name;
+  val.classList.remove('placeholder');
+
+  document.getElementById('vol').value = m.vol;
+  calc();
+  closeSheet();
+}
+
+function openSheet() {
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  setTimeout(() => document.getElementById('searchInput').focus(), 350);
+}
+
+function closeSheet() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+  document.getElementById('searchInput').value = '';
+  filterMolds('');
 }
 
 function calc() {
   const v = parseFloat(document.getElementById('vol').value) || 0;
-  document.getElementById('waterVal').textContent  = selectedMat && v > 0 ? (v * selectedMat.w).toFixed(2) : '0.00';
-  document.getElementById('powderVal').textContent = selectedMat && v > 0 ? (v * selectedMat.p).toFixed(2) : '0.00';
+  document.getElementById('waterVal').textContent  = selectedMat && v > 0 ? (v * selectedMat.w).toFixed(2) : '—';
+  document.getElementById('powderVal').textContent = selectedMat && v > 0 ? (v * selectedMat.p).toFixed(2) : '—';
 }
 
 init();
