@@ -2,22 +2,32 @@
 <html dir="rtl" lang="he">
 <head>
     <meta charset="UTF-8">
-    <title>מחשבון בטון פולימרי</title>
+    <title>מחשבון בטון פולימרי משודרג</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa; display: flex; justify-content: center; }
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 450px; border: 1px solid #eee; }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 30px; font-size: 24px; }
-        .form-group { margin-bottom: 20px; text-align: right; }
-        label { display: block; margin-bottom: 10px; font-weight: 600; color: #555; font-size: 14px; }
-        select { width: 100%; padding: 15px; border: 2px solid #eaeeef; border-radius: 12px; font-size: 16px; background-color: #fdfdfd; cursor: pointer; transition: border-color 0.2s; }
-        select:focus { border-color: #3498db; outline: none; }
-        .result-box { margin-top: 30px; padding: 20px; background: #f0f7ff; border-radius: 15px; display: none; border: 1px solid #d1e9ff; }
-        .result-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .result-label { font-size: 16px; color: #444; }
-        .result-value { font-size: 22px; font-weight: 800; color: #2980b9; }
-        .divider { height: 1px; background: #d1e9ff; margin: 15px 0; }
-        .loading { text-align: center; color: #999; padding: 40px 0; }
+        :root { --primary: #2980b9; --bg: #f4f7f6; }
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 15px; background-color: var(--bg); display: flex; justify-content: center; }
+        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); width: 100%; max-width: 500px; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        
+        .section-title { font-weight: bold; margin: 15px 0 10px; display: block; color: #555; }
+        
+        /* עיצוב כפתורי בחירה מהירה */
+        .grid-select { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .chip { padding: 12px; border: 2px solid #eaeeef; border-radius: 12px; text-align: center; cursor: pointer; background: #fff; transition: 0.2s; font-size: 14px; }
+        .chip.active { border-color: var(--primary); background: #eef7ff; color: var(--primary); font-weight: bold; }
+        
+        /* שדה הזנה ידנית */
+        .manual-input { width: 100%; padding: 15px; border: 2px solid #eaeeef; border-radius: 12px; font-size: 18px; box-sizing: border-box; text-align: center; margin-bottom: 10px; }
+        .manual-input:focus { border-color: var(--primary); outline: none; background: #fff; }
+
+        .result-box { margin-top: 25px; padding: 20px; background: #2c3e50; color: white; border-radius: 15px; text-align: center; }
+        .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+        .res-label { font-size: 14px; opacity: 0.8; }
+        .res-val { font-size: 24px; font-weight: bold; display: block; }
+        
+        .loading { text-align: center; color: #999; padding: 30px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -25,113 +35,113 @@
 <div class="card">
     <h2>מחשבון יציקה</h2>
     
-    <div id="loader" class="loading">מתחבר לגיליון הנתונים...</div>
+    <div id="loader" class="loading">טוען נתונים...</div>
 
-    <div id="mainContent" style="display: none;">
-        <div class="form-group">
-            <label>בחר תבנית:</label>
-            <select id="moldSelect"></select>
-        </div>
+    <div id="mainContent" class="hidden">
+        <span class="section-title">1. בחירת אבקה:</span>
+        <div id="materialChips" class="grid-select"></div>
 
-        <div class="form-group">
-            <label>סוג אבקה:</label>
-            <select id="materialSelect"></select>
-        </div>
+        <span class="section-title">2. בחירת תבנית מהרשימה:</span>
+        <select id="moldSelect" style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #eee; margin-bottom: 15px;"></select>
+
+        <span class="section-title">או הזנת נפח מים ידנית (גרם):</span>
+        <input type="number" id="manualVolume" class="manual-input" placeholder="הכנס משקל מים בתבנית..." inputmode="decimal">
 
         <div id="resultArea" class="result-box">
-            <div class="result-item">
-                <span class="result-label">כמות מים</span>
-                <span id="waterVal" class="result-value">0</span>
-            </div>
-            <div class="divider"></div>
-            <div class="result-item">
-                <span class="result-label">כמות אבקה</span>
-                <span id="powderVal" class="result-value">0</span>
+            <div class="result-grid">
+                <div>
+                    <span class="res-label">מים</span>
+                    <span id="waterVal" class="res-val">0.00</span>
+                </div>
+                <div>
+                    <span class="res-label">אבקה</span>
+                    <span id="powderVal" class="res-val">0.00</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // קישורים לגיליונות ה-Google Sheets שלך
     const moldsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=0&single=true&output=csv";
     const materialsURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=2012837645&single=true&output=csv";
 
     let molds = [];
     let materials = [];
+    let selectedMaterial = null;
 
     async function loadData() {
         try {
-            const [resMolds, resMats] = await Promise.all([
-                fetch(moldsURL),
-                fetch(materialsURL)
-            ]);
-
+            const [resMolds, resMats] = await Promise.all([fetch(moldsURL), fetch(materialsURL)]);
             const textMolds = await resMolds.text();
             const textMats = await resMats.text();
 
-            // פירוק נתוני התבניות
-            molds = parseCSV(textMolds).map(row => ({
-                name: row[0],
-                volume: parseFloat(row[1])
-            })).filter(item => item.name && !isNaN(item.volume));
-
-            // פירוק נתוני האבקות
-            materials = parseCSV(textMats).map(row => ({
-                name: row[0],
-                wRatio: parseFloat(row[1]),
-                pRatio: parseFloat(row[2])
-            })).filter(item => item.name && !isNaN(item.wRatio));
+            molds = parseCSV(textMolds).map(row => ({ name: row[0], volume: parseFloat(row[1]) }))
+                    .filter(item => item.name && !isNaN(item.volume));
+            
+            materials = parseCSV(textMats).map(row => ({ name: row[0], wRatio: parseFloat(row[1]), pRatio: parseFloat(row[2]) }))
+                        .filter(item => item.name && !isNaN(item.wRatio));
 
             initApp();
         } catch (err) {
-            document.getElementById('loader').innerText = "שגיאה בחיבור לנתונים. וודא שהגיליון פתוח לצפייה.";
-            console.error(err);
+            document.getElementById('loader').innerText = "שגיאה בטעינה";
         }
     }
 
     function parseCSV(text) {
-        return text.split('\n').slice(1).map(row => {
-            return row.split(',').map(cell => cell.replace(/["']/g, "").trim());
-        });
+        return text.split('\n').slice(1).map(row => row.split(',').map(cell => cell.replace(/["']/g, "").trim()));
     }
 
     function initApp() {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
 
+        // יצירת כפתורי אבקה
+        const chipsContainer = document.getElementById('materialChips');
+        materials.forEach((mat, index) => {
+            const chip = document.createElement('div');
+            chip.className = 'chip' + (index === 0 ? ' active' : '');
+            chip.innerText = mat.name;
+            if(index === 0) selectedMaterial = mat;
+            chip.onclick = () => {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                selectedMaterial = mat;
+                calculate();
+            };
+            chipsContainer.appendChild(chip);
+        });
+
+        // מילוי תפריט תבניות
         const mSelect = document.getElementById('moldSelect');
-        const matSelect = document.getElementById('materialSelect');
-
-        // מיון אלפביתי של התבניות (עברית)
         molds.sort((a, b) => a.name.localeCompare(b.name, 'he'));
+        mSelect.innerHTML = '<option value="">-- בחר תבנית קיימת --</option>' + 
+                          molds.map(m => `<option value="${m.volume}">${m.name} (${m.volume}g)</option>`).join('');
 
-        mSelect.innerHTML = molds.map(m => `<option value="${m.volume}">${m.name} (${m.volume}g)</option>`).join('');
-        matSelect.innerHTML = materials.map(m => `<option value="${m.wRatio}|${m.pRatio}">${m.name}</option>`).join('');
-
-        mSelect.addEventListener('change', calculate);
-        matSelect.addEventListener('change', calculate);
+        // האזנה לשינויים
+        mSelect.onchange = () => {
+            if(mSelect.value) document.getElementById('manualVolume').value = mSelect.value;
+            calculate();
+        };
+        document.getElementById('manualVolume').oninput = calculate;
 
         calculate();
     }
 
     function calculate() {
-        const volume = parseFloat(document.getElementById('moldSelect').value);
-        const [wRatio, pRatio] = document.getElementById('materialSelect').value.split('|').map(parseFloat);
-
-        if (volume && !isNaN(wRatio) && !isNaN(pRatio)) {
-            // חישוב והצגה עם דיוק של 2 ספרות אחרי הנקודה
-            const water = (volume * wRatio).toFixed(2);
-            const powder = (volume * pRatio).toFixed(2);
-
-            document.getElementById('waterVal').innerText = water + " גרם";
-            document.getElementById('powderVal').innerText = powder + " גרם";
-            document.getElementById('resultArea').style.display = 'block';
+        const manualVal = parseFloat(document.getElementById('manualVolume').value);
+        const volume = manualVal || 0;
+        
+        if (selectedMaterial && volume > 0) {
+            document.getElementById('waterVal').innerText = (volume * selectedMaterial.wRatio).toFixed(2);
+            document.getElementById('powderVal').innerText = (volume * selectedMaterial.pRatio).toFixed(2);
+        } else {
+            document.getElementById('waterVal').innerText = "0.00";
+            document.getElementById('powderVal').innerText = "0.00";
         }
     }
 
     loadData();
 </script>
-
 </body>
 </html>
