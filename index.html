@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
     :root {
       --bg: #f4f7f6;
       --card: #ffffff;
@@ -25,151 +24,56 @@
       --border-soft: rgba(0,0,0,0.10);
       --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
       --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
       --shadow-primary: 0 4px 16px rgba(41,128,185,0.25);
-      --shadow-accent: 0 4px 16px rgba(39,174,96,0.25);
-      --r-sm: 12px;
-      --r-md: 16px;
-      --r-lg: 20px;
-      --r-xl: 24px;
+      --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 24px;
     }
+    body { font-family: 'Heebo', system-ui, sans-serif; background: var(--bg); color: var(--text-h); min-height: 100vh; padding: 0 0 80px; direction: rtl; }
+    .app { max-width: 480px; margin: 0 auto; padding: 0 14px; }
 
-    body {
-      font-family: 'Heebo', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text-h);
-      min-height: 100vh;
-      padding: 0 0 60px;
-      direction: rtl;
-    }
-
-    .app {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 0 14px;
-    }
-
-    /* ── Header ── */
-    .header {
-      text-align: center;
-      padding: 32px 0 24px;
-    }
-    .header-icon {
-      width: 56px; height: 56px;
-      background: var(--primary-light);
-      border-radius: 18px;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 26px; margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
-    }
-    .header h1 { font-size: 22px; font-weight: 700; color: var(--text-h); letter-spacing: -0.4px; }
+    .header { text-align: center; padding: 28px 0 20px; }
+    .header-icon { width: 56px; height: 56px; background: var(--primary-light); border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
     .header p  { font-size: 13px; color: var(--text-b); margin-top: 4px; }
 
-    /* ── Card ── */
-    .card {
-      background: var(--card);
-      border-radius: var(--r-xl);
-      box-shadow: var(--shadow-md);
-      padding: 16px;
-      margin-bottom: 14px;
-      overflow: hidden;
-    }
+    .card { background: var(--card); border-radius: var(--r-xl); box-shadow: var(--shadow-md); padding: 16px; margin-bottom: 14px; overflow: hidden; }
+    .section-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
 
-    .section-lbl {
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--text-dim); margin-bottom: 10px;
-    }
-
-    /* ── Chips ── */
+    /* Chips */
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
-      font-size: 13px; padding: 8px 16px;
-      border-radius: 50px;
-      border: 1.5px solid var(--border-soft);
-      background: var(--surface);
-      color: var(--text-b);
-      cursor: pointer; transition: all 0.18s;
-      font-family: 'Heebo', inherit; line-height: 1;
-      min-height: 44px; display: flex; align-items: center;
-      box-shadow: var(--shadow-sm);
-    }
+    .chip { font-size: 13px; padding: 8px 16px; border-radius: 50px; border: 1.5px solid var(--border-soft); background: var(--surface); color: var(--text-b); cursor: pointer; transition: all 0.18s; font-family: inherit; line-height: 1; min-height: 44px; display: flex; align-items: center; box-shadow: var(--shadow-sm); }
     .chip:active { transform: scale(0.96); }
-    .chip.on {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-      font-weight: 600;
-      box-shadow: var(--shadow-primary);
-    }
+    .chip.on { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; box-shadow: var(--shadow-primary); }
 
-    /* ── Picker button ── */
-    .picker-btn {
-      width: 100%;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 12px;
-      min-height: 60px;
-      background: var(--surface);
-      border: 1.5px solid var(--border-soft);
-      border-radius: var(--r-md);
-      cursor: pointer; transition: all 0.18s;
-      font-family: 'Heebo', inherit;
-      box-shadow: var(--shadow-sm);
-      gap: 8px;
-      overflow: hidden;
-    }
+    /* Picker */
+    .picker-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; min-height: 60px; background: var(--surface); border: 1.5px solid var(--border-soft); border-radius: var(--r-md); cursor: pointer; transition: all 0.18s; font-family: inherit; box-shadow: var(--shadow-sm); gap: 8px; overflow: hidden; }
     .picker-btn:active { transform: scale(0.99); }
-    .picker-btn.has-value {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-
+    .picker-btn.has-value { border-color: var(--primary); background: var(--primary-light); }
     .picker-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .picker-thumb {
-      width: 44px; height: 44px; flex-shrink: 0;
-      border-radius: var(--r-sm); overflow: hidden;
-      background: #eee;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-sm);
-    }
+    .picker-thumb { width: 44px; height: 44px; flex-shrink: 0; border-radius: var(--r-sm); overflow: hidden; background: #eee; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); cursor: zoom-in; }
     .picker-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .picker-thumb-empty { color: var(--text-dim); font-size: 20px; }
     .picker-text { min-width: 0; text-align: right; }
     .picker-label { font-size: 11px; color: var(--text-dim); margin-bottom: 2px; }
     .picker-value { font-size: 14px; font-weight: 600; color: var(--text-h); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .picker-value.placeholder { color: var(--text-b); font-weight: 400; }
-    .picker-arrow { color: var(--text-dim); flex-shrink: 0; font-size: 18px; transition: transform 0.2s; }
-    .sheet.open ~ * .picker-arrow { transform: rotate(180deg); }
+    .picker-arrow { color: var(--text-dim); flex-shrink: 0; font-size: 18px; }
 
-    /* ── Volume input ── */
-    .vol-row {
-      display: flex; align-items: center; gap: 8px;
-      border: 1.5px solid var(--border-soft);
-      border-radius: var(--r-md);
-      padding: 0 12px;
-      min-height: 60px;
-      width: 100%;
-      background: var(--surface);
-      transition: border-color 0.18s, box-shadow 0.18s;
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-    .vol-row:focus-within {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
-    }
+    /* Volume */
+    .vol-row { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--border-soft); border-radius: var(--r-md); padding: 0 12px; min-height: 60px; width: 100%; background: var(--surface); transition: border-color 0.18s, box-shadow 0.18s; box-shadow: var(--shadow-sm); overflow: hidden; }
+    .vol-row:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(41,128,185,0.12); }
     .vol-lbl { font-size: 13px; color: var(--text-b); white-space: nowrap; flex-shrink: 0; }
-    .vol-in {
-      flex: 1; border: none; outline: none;
-      font-size: 24px; font-weight: 600;
-      color: var(--text-h); font-family: 'Heebo', inherit;
-      text-align: center; background: transparent;
-      direction: ltr; min-height: 44px;
-      min-width: 0; width: 100%;
-    }
+    .vol-in { flex: 1; border: none; outline: none; font-size: 24px; font-weight: 600; color: var(--text-h); font-family: inherit; text-align: center; background: transparent; direction: ltr; min-height: 44px; min-width: 0; width: 100%; }
     .vol-unit { font-size: 13px; color: var(--text-b); white-space: nowrap; flex-shrink: 0; }
 
-    /* ── Results (merged into vol card) ── */
+    /* Casts multiplier */
+    .casts-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+    .casts-lbl { font-size: 13px; color: var(--text-b); }
+    .casts-ctrl { display: flex; align-items: center; border: 1.5px solid var(--border-soft); border-radius: 50px; background: var(--surface); overflow: hidden; }
+    .casts-btn { width: 40px; height: 40px; border: none; background: none; font-size: 22px; font-weight: 300; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: inherit; transition: background 0.12s; }
+    .casts-btn:active { background: var(--primary-light); }
+    .casts-num { min-width: 38px; text-align: center; font-size: 16px; font-weight: 700; color: var(--text-h); }
+
+    /* Divider + results */
     .vol-divider { height: 1px; background: var(--border-soft); margin: 14px 0 12px; }
     .results { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
     .res-cell { display: flex; flex-direction: column; gap: 4px; padding: 10px 4px; }
@@ -184,141 +88,88 @@
     .res-cell.powder .res-val { color: #e67e22; }
     .res-unit-sm { font-size: 12px; color: var(--text-b); font-weight: 400; }
 
-    /* ── Loader ── */
+    /* Add to round button */
+    .add-btn { width: 100%; margin-top: 14px; padding: 13px; background: var(--accent); color: #fff; border: none; border-radius: var(--r-md); font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(39,174,96,0.28); transition: all 0.18s; }
+    .add-btn:active { transform: scale(0.98); opacity: 0.9; }
+    .add-btn:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
+
+    /* Round card */
+    .round-card { display: none; }
+    .round-card.has-items { display: block; }
+    .round-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .round-item:last-child { border-bottom: none; }
+    .round-thumb { width: 40px; height: 40px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: var(--surface); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); }
+    .round-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .round-info { flex: 1; min-width: 0; }
+    .round-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .round-sub { font-size: 11px; color: var(--text-b); margin-top: 2px; }
+    .round-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .round-qty-ctrl { display: flex; align-items: center; border: 1px solid var(--border-soft); border-radius: 50px; overflow: hidden; background: var(--surface); }
+    .round-qty-btn { width: 30px; height: 30px; border: none; background: none; font-size: 18px; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: inherit; }
+    .round-qty-btn:active { background: var(--primary-light); }
+    .round-qty-num { min-width: 26px; text-align: center; font-size: 14px; font-weight: 700; }
+    .round-del { width: 30px; height: 30px; border: none; background: none; color: #ccc; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: color 0.15s, background 0.15s; }
+    .round-del:active { color: #e74c3c; background: #fdecea; }
+
+    /* Round total */
+    .round-divider { height: 1px; background: var(--border-soft); margin: 14px 0 12px; }
+    .round-total-row { display: flex; align-items: center; justify-content: space-between; }
+    .round-total-lbl { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+    .round-totals { display: flex; gap: 20px; }
+    .round-total-item { text-align: center; }
+    .round-total-sub { font-size: 11px; color: var(--text-b); margin-bottom: 2px; }
+    .round-total-val { font-size: 20px; font-weight: 700; }
+    .round-total-item.water .round-total-val { color: var(--primary); }
+    .round-total-item.powder .round-total-val { color: #e67e22; }
+    .round-clear { font-size: 12px; color: var(--text-dim); background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 8px; transition: color 0.15s; }
+    .round-clear:active { color: #e74c3c; }
+
+    /* Loader */
     .loader { text-align: center; padding: 60px 0; color: var(--text-b); font-size: 14px; }
-    .spinner {
-      width: 30px; height: 30px;
-      border: 2.5px solid var(--border-soft);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
-      margin: 0 auto 12px;
-    }
+    .spinner { width: 30px; height: 30px; border: 2.5px solid var(--border-soft); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Bottom Sheet ── */
-    .sheet-overlay {
-      position: fixed; inset: 0;
-      background: rgba(30,40,50,0.4);
-      z-index: 100;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.25s;
-    }
+    /* Bottom sheet */
+    .sheet-overlay { position: fixed; inset: 0; background: rgba(30,40,50,0.4); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
     .sheet-overlay.open { opacity: 1; pointer-events: all; }
-
-    .sheet {
-      position: fixed; bottom: 0; right: 0; left: 0;
-      background: var(--card);
-      border-radius: 24px 24px 0 0;
-      z-index: 101;
-      max-height: 82vh;
-      display: flex; flex-direction: column;
-      transform: translateY(100%);
-      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
-      direction: rtl;
-      box-shadow: 0 -8px 40px rgba(0,0,0,0.14);
-    }
+    .sheet { position: fixed; bottom: 0; right: 0; left: 0; background: var(--card); border-radius: 24px 24px 0 0; z-index: 101; max-height: 82vh; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.32s cubic-bezier(0.32,0.72,0,1); direction: rtl; box-shadow: 0 -8px 40px rgba(0,0,0,0.14); }
     .sheet.open { transform: translateY(0); }
-
-    .sheet-handle {
-      width: 40px; height: 4px;
-      background: #ddd;
-      border-radius: 2px;
-      margin: 10px auto 0;
-      flex-shrink: 0;
-    }
-    .sheet-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px 10px;
-      flex-shrink: 0;
-    }
-    .sheet-title { font-size: 17px; font-weight: 700; color: var(--text-h); }
-    .sheet-close {
-      width: 34px; height: 34px; border-radius: 50%;
-      border: none; background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 16px; color: var(--text-b);
-      font-family: inherit; box-shadow: var(--shadow-sm);
-      transition: background 0.15s;
-    }
+    .sheet-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 10px auto 0; flex-shrink: 0; }
+    .sheet-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 10px; flex-shrink: 0; }
+    .sheet-title { font-size: 17px; font-weight: 700; }
+    .sheet-close { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--bg); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--text-b); font-family: inherit; box-shadow: var(--shadow-sm); transition: background 0.15s; }
     .sheet-close:active { background: #e0e0e0; }
-
     .sheet-search-wrap { padding: 0 16px 10px; flex-shrink: 0; }
     .search-wrap-inner { position: relative; }
-    .sheet-search {
-      width: 100%; padding: 11px 38px 11px 14px;
-      border: 1.5px solid var(--border-soft);
-      border-radius: var(--r-md);
-      font-size: 14px; font-family: 'Heebo', inherit;
-      background: var(--surface);
-      color: var(--text-h); outline: none;
-      direction: rtl;
-      box-shadow: var(--shadow-sm);
-      transition: border-color 0.18s, box-shadow 0.18s;
-    }
-    .sheet-search:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
-    }
-    .search-icon {
-      position: absolute; top: 50%; right: 12px;
-      transform: translateY(-50%);
-      font-size: 16px; color: var(--text-dim);
-      pointer-events: none;
-    }
-
-    .sheet-list {
-      overflow-y: auto; flex: 1;
-      padding: 4px 16px 24px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .sheet-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 10px;
-      border-radius: var(--r-sm);
-      cursor: pointer; transition: background 0.12s;
-      margin-bottom: 2px;
-    }
+    .sheet-search { width: 100%; padding: 11px 38px 11px 14px; border: 1.5px solid var(--border-soft); border-radius: var(--r-md); font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text-h); outline: none; direction: rtl; box-shadow: var(--shadow-sm); transition: border-color 0.18s, box-shadow 0.18s; }
+    .sheet-search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(41,128,185,0.12); }
+    .search-icon { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); font-size: 16px; color: var(--text-dim); pointer-events: none; }
+    .sheet-list { overflow-y: auto; flex: 1; padding: 4px 16px 24px; -webkit-overflow-scrolling: touch; }
+    .sheet-item { display: flex; align-items: center; gap: 12px; padding: 11px 10px; border-radius: var(--r-sm); cursor: pointer; transition: background 0.12s; margin-bottom: 2px; }
     .sheet-item:active { background: var(--bg); }
     .sheet-item.on { background: var(--primary-light); }
-
-    .item-thumb {
-      width: 54px; height: 54px; flex-shrink: 0;
-      border-radius: var(--r-sm); overflow: hidden;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid var(--border);
-    }
+    .item-thumb { width: 54px; height: 54px; flex-shrink: 0; border-radius: var(--r-sm); overflow: hidden; background: var(--bg); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); }
     .item-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .item-thumb-empty { font-size: 22px; color: var(--text-dim); }
-
     .item-text { flex: 1; min-width: 0; }
-    .item-name { font-size: 14px; font-weight: 600; color: var(--text-h); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .item-vol  { font-size: 12px; color: var(--text-b); margin-top: 2px; }
-
     .item-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .item-check { font-size: 20px; color: var(--primary); opacity: 0; transition: opacity 0.15s; }
     .sheet-item.on .item-check { opacity: 1; }
-
-    .item-link {
-      width: 34px; height: 34px;
-      border-radius: var(--r-sm);
-      border: 1.5px solid var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none; font-size: 15px; color: var(--accent);
-      background: var(--accent-light);
-      transition: background 0.15s;
-    }
+    .item-link { width: 34px; height: 34px; border-radius: var(--r-sm); border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; color: var(--accent); background: var(--accent-light); transition: background 0.15s; }
     .item-link:active { background: #d5f5e3; }
-
     .sheet-empty { text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 14px; }
 
-    .divider { height: 1px; background: var(--border); margin: 4px 0; }
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; padding: 24px; }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img { max-width: 100%; max-height: 80vh; border-radius: var(--r-lg); object-fit: contain; transform: scale(0.9); transition: transform 0.25s cubic-bezier(0.34,1.4,0.64,1); }
+    .lightbox.open img { transform: scale(1); }
+    .lb-close { position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.15); border: none; border-radius: 50%; color: #fff; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
   </style>
 </head>
 <body>
-
 <div class="app">
   <div class="header">
     <div class="header-icon">🏺</div>
@@ -326,23 +177,22 @@
     <p>חשב יחסי אבקה ומים לתבנית שלך</p>
   </div>
 
-  <div id="loader" class="loader">
-    <div class="spinner"></div>
-    מתחבר לנתונים...
-  </div>
+  <div id="loader" class="loader"><div class="spinner"></div>מתחבר לנתונים...</div>
 
   <div id="main" style="display:none">
 
+    <!-- אבקה -->
     <div class="card">
       <div class="section-lbl">אבקה</div>
       <div id="chips" class="chips"></div>
     </div>
 
+    <!-- תבנית -->
     <div class="card">
       <div class="section-lbl">תבנית</div>
       <button class="picker-btn" id="pickerBtn" onclick="openSheet()">
         <div class="picker-left">
-          <div class="picker-thumb" id="pickerThumb">
+          <div class="picker-thumb" id="pickerThumb" onclick="event.stopPropagation(); openLightbox()">
             <i class="ti ti-box picker-thumb-empty" aria-hidden="true"></i>
           </div>
           <div class="picker-text">
@@ -354,6 +204,7 @@
       </button>
     </div>
 
+    <!-- נפח + כמות יציקות + תוצאה -->
     <div class="card">
       <div class="section-lbl">נפח מים (גרם)</div>
       <div class="vol-row">
@@ -361,21 +212,53 @@
         <input type="number" id="vol" class="vol-in" placeholder="0" inputmode="decimal">
         <span class="vol-unit">גרם</span>
       </div>
+      <div class="casts-row">
+        <span class="casts-lbl">מספר יציקות מתבנית זו</span>
+        <div class="casts-ctrl">
+          <button class="casts-btn" onclick="changeCasts(-1)" aria-label="פחות">−</button>
+          <span class="casts-num" id="castsNum">1</span>
+          <button class="casts-btn" onclick="changeCasts(1)" aria-label="יותר">+</button>
+        </div>
+      </div>
       <div class="vol-divider"></div>
       <div class="results">
         <div class="res-cell water">
-          <div class="res-lbl">
-            <span class="res-dot" style="background:#2980b9"></span>מים
-          </div>
+          <div class="res-lbl"><span class="res-dot" style="background:#2980b9"></span>מים</div>
           <span id="waterVal" class="res-val">—</span>
           <span class="res-unit-sm">גרם</span>
         </div>
         <div class="res-cell powder">
-          <div class="res-lbl">
-            <span class="res-dot" style="background:#e67e22"></span>אבקה
-          </div>
+          <div class="res-lbl"><span class="res-dot" style="background:#e67e22"></span>אבקה</div>
           <span id="powderVal" class="res-val">—</span>
           <span class="res-unit-sm">גרם</span>
+        </div>
+      </div>
+      <button class="add-btn" id="addBtn" onclick="addToRound()" disabled>
+        <i class="ti ti-plus" aria-hidden="true"></i> הוסף לסבב
+      </button>
+    </div>
+
+    <!-- סבב תבניות -->
+    <div class="card round-card" id="roundCard">
+      <div class="section-lbl">סבב יציקה</div>
+      <div id="roundList"></div>
+      <div class="round-divider"></div>
+      <div class="round-total-row">
+        <div>
+          <div class="round-total-lbl">סה"כ</div>
+          <button class="round-clear" onclick="clearRound()">נקה הכל</button>
+        </div>
+        <div class="round-totals">
+          <div class="round-total-item water">
+            <div class="round-total-sub">מים</div>
+            <div class="round-total-val" id="totalWater">0</div>
+            <div style="font-size:11px;color:var(--text-b)">גרם</div>
+          </div>
+          <div class="round-total-item powder">
+            <div class="round-total-sub">אבקה</div>
+            <div class="round-total-val" id="totalPowder">0</div>
+            <div style="font-size:11px;color:var(--text-b)">גרם</div>
+          </div>
         </div>
       </div>
     </div>
@@ -389,148 +272,207 @@
   <div class="sheet-handle"></div>
   <div class="sheet-header">
     <span class="sheet-title">בחר תבנית</span>
-    <button class="sheet-close" onclick="closeSheet()" aria-label="סגור">
-      <i class="ti ti-x" aria-hidden="true"></i>
-    </button>
+    <button class="sheet-close" onclick="closeSheet()" aria-label="סגור"><i class="ti ti-x" aria-hidden="true"></i></button>
   </div>
   <div class="sheet-search-wrap">
     <div class="search-wrap-inner">
-      <input type="search" id="searchInput" class="sheet-search"
-             placeholder="חיפוש לפי שם..." oninput="filterMolds(this.value)">
+      <input type="search" id="searchInput" class="sheet-search" placeholder="חיפוש לפי שם..." oninput="filterMolds(this.value)">
       <i class="ti ti-search search-icon" aria-hidden="true"></i>
     </div>
   </div>
   <div class="sheet-list" id="sheetList"></div>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lbImg" src="" alt="">
+  <button class="lb-close" onclick="closeLightbox()" aria-label="סגור"><i class="ti ti-x" aria-hidden="true"></i></button>
+</div>
+
 <script>
 const MOLDS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=0&single=true&output=csv";
 const MATS_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=2012837645&single=true&output=csv";
 
-let selectedMat = null;
-let selectedMold = null;
-let allMolds = [];
+let selectedMat = null, selectedMold = null, allMolds = [], casts = 1;
+let round = [];
 
 function parseCSV(text) {
   return text.split('\n').slice(1)
-    .map(r => r.split(',').map(c => c.replace(/["']/g, '').trim()))
+    .map(r => r.split(',').map(c => c.replace(/["']/g,'').trim()))
     .filter(r => r.some(c => c));
 }
 
 async function init() {
   try {
-    const [r1, r2] = await Promise.all([fetch(MOLDS_URL), fetch(MATS_URL)]);
-    const [t1, t2] = await Promise.all([r1.text(), r2.text()]);
+    const [r1,r2] = await Promise.all([fetch(MOLDS_URL),fetch(MATS_URL)]);
+    const [t1,t2] = await Promise.all([r1.text(),r2.text()]);
 
     allMolds = parseCSV(t1)
-      .map(r => ({ name: r[0], vol: parseFloat(r[1]), img: r[2] || '', link: r[3] || '' }))
-      .filter(m => m.name && !isNaN(m.vol))
-      .sort((a, b) => a.name.localeCompare(b.name, 'he'));
+      .map(r=>({name:r[0],vol:parseFloat(r[1]),img:r[2]||'',link:r[3]||''}))
+      .filter(m=>m.name&&!isNaN(m.vol))
+      .sort((a,b)=>a.name.localeCompare(b.name,'he'));
 
     const mats = parseCSV(t2)
-      .map(r => ({ name: r[0], w: parseFloat(r[1]), p: parseFloat(r[2]) }))
-      .filter(m => m.name && !isNaN(m.w));
+      .map(r=>({name:r[0],w:parseFloat(r[1]),p:parseFloat(r[2])}))
+      .filter(m=>m.name&&!isNaN(m.w));
 
-    document.getElementById('loader').style.display = 'none';
-    document.getElementById('main').style.display = 'block';
+    document.getElementById('loader').style.display='none';
+    document.getElementById('main').style.display='block';
 
     const chipsEl = document.getElementById('chips');
-    mats.forEach((m, i) => {
+    mats.forEach((m,i)=>{
       const b = document.createElement('button');
-      b.className = 'chip' + (i === 0 ? ' on' : '');
+      b.className = 'chip'+(i===0?' on':'');
       b.textContent = m.name;
-      if (i === 0) selectedMat = m;
-      b.onclick = () => {
-        chipsEl.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
-        b.classList.add('on');
-        selectedMat = m;
-        calc();
-      };
+      if(i===0) selectedMat=m;
+      b.onclick=()=>{ chipsEl.querySelectorAll('.chip').forEach(x=>x.classList.remove('on')); b.classList.add('on'); selectedMat=m; calc(); };
       chipsEl.appendChild(b);
     });
 
     renderSheetList(allMolds);
     document.getElementById('vol').oninput = calc;
     calc();
-  } catch (e) {
-    document.getElementById('loader').innerHTML =
-      '<i class="ti ti-alert-circle" style="font-size:26px;color:#e74c3c;display:block;margin:0 auto 8px"></i>שגיאה בטעינת נתונים';
+  } catch(e) {
+    document.getElementById('loader').innerHTML='<i class="ti ti-alert-circle" style="font-size:26px;color:#e74c3c;display:block;margin:0 auto 8px"></i>שגיאה בטעינת נתונים';
   }
 }
 
 function renderSheetList(molds) {
   const list = document.getElementById('sheetList');
-  if (!molds.length) {
-    list.innerHTML = '<div class="sheet-empty">לא נמצאו תבניות</div>';
-    return;
-  }
-  list.innerHTML = molds.map(m => {
-    const thumb = m.img && m.img.length > 5
-      ? `<img src="${m.img}" alt="${m.name}" loading="lazy">`
-      : `<i class="ti ti-box item-thumb-empty" aria-hidden="true"></i>`;
-    const link = m.link && m.link.length > 5
-      ? `<a class="item-link" href="${m.link}" target="_blank"
-           onclick="event.stopPropagation()" aria-label="לינק לרכישה">
-           <i class="ti ti-external-link" aria-hidden="true"></i></a>`
-      : '';
-    const isOn = selectedMold && selectedMold.name === m.name ? ' on' : '';
-    const mJson = JSON.stringify(m).replace(/"/g, '&quot;');
-    return `<div class="sheet-item${isOn}" onclick="selectMold(${mJson})">
+  if(!molds.length){ list.innerHTML='<div class="sheet-empty">לא נמצאו תבניות</div>'; return; }
+  list.innerHTML = molds.map(m=>{
+    const thumb = m.img&&m.img.length>5 ? `<img src="${m.img}" alt="${m.name}" loading="lazy">` : `<i class="ti ti-box item-thumb-empty" aria-hidden="true"></i>`;
+    const link  = m.link&&m.link.length>5 ? `<a class="item-link" href="${m.link}" target="_blank" onclick="event.stopPropagation()" aria-label="לינק לרכישה"><i class="ti ti-external-link" aria-hidden="true"></i></a>` : '';
+    const isOn  = selectedMold&&selectedMold.name===m.name?' on':'';
+    const mj    = JSON.stringify(m).replace(/"/g,'&quot;');
+    return `<div class="sheet-item${isOn}" onclick="selectMold(${mj})">
       <div class="item-thumb">${thumb}</div>
-      <div class="item-text">
-        <div class="item-name">${m.name}</div>
-        <div class="item-vol">${m.vol} גרם</div>
-      </div>
-      <div class="item-right">
-        ${link}
-        <i class="ti ti-circle-check item-check" aria-hidden="true"></i>
-      </div>
+      <div class="item-text"><div class="item-name">${m.name}</div><div class="item-vol">${m.vol} גרם</div></div>
+      <div class="item-right">${link}<i class="ti ti-circle-check item-check" aria-hidden="true"></i></div>
     </div>`;
   }).join('');
 }
 
 function filterMolds(q) {
-  const filtered = q.trim() ? allMolds.filter(m => m.name.includes(q)) : allMolds;
-  renderSheetList(filtered);
+  renderSheetList(q.trim() ? allMolds.filter(m=>m.name.includes(q)) : allMolds);
 }
 
 function selectMold(m) {
   selectedMold = m;
-
-  const btn = document.getElementById('pickerBtn');
-  btn.classList.add('has-value');
-
+  document.getElementById('pickerBtn').classList.add('has-value');
   const thumb = document.getElementById('pickerThumb');
-  thumb.innerHTML = m.img && m.img.length > 5
+  thumb.innerHTML = m.img&&m.img.length>5
     ? `<img src="${m.img}" alt="${m.name}">`
     : `<i class="ti ti-box picker-thumb-empty" aria-hidden="true"></i>`;
-
   const val = document.getElementById('pickerValue');
-  val.textContent = m.name;
-  val.classList.remove('placeholder');
-
+  val.textContent = m.name; val.classList.remove('placeholder');
   document.getElementById('vol').value = m.vol;
+  casts = 1; document.getElementById('castsNum').textContent = 1;
+  calc(); closeSheet();
+}
+
+function changeCasts(d) {
+  casts = Math.max(1, casts + d);
+  document.getElementById('castsNum').textContent = casts;
   calc();
-  closeSheet();
-}
-
-function openSheet() {
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('sheet').classList.add('open');
-  setTimeout(() => document.getElementById('searchInput').focus(), 350);
-}
-
-function closeSheet() {
-  document.getElementById('overlay').classList.remove('open');
-  document.getElementById('sheet').classList.remove('open');
-  document.getElementById('searchInput').value = '';
-  filterMolds('');
 }
 
 function calc() {
   const v = parseFloat(document.getElementById('vol').value) || 0;
-  document.getElementById('waterVal').textContent  = selectedMat && v > 0 ? (v * selectedMat.w).toFixed(2) : '—';
-  document.getElementById('powderVal').textContent = selectedMat && v > 0 ? (v * selectedMat.p).toFixed(2) : '—';
+  const hasResult = selectedMat && v > 0;
+  document.getElementById('waterVal').textContent  = hasResult ? (v * casts * selectedMat.w).toFixed(2) : '—';
+  document.getElementById('powderVal').textContent = hasResult ? (v * casts * selectedMat.p).toFixed(2) : '—';
+  document.getElementById('addBtn').disabled = !hasResult || !selectedMold;
+}
+
+/* ── Round ── */
+function addToRound() {
+  const v = parseFloat(document.getElementById('vol').value) || 0;
+  if(!selectedMat || !selectedMold || v<=0) return;
+  const existing = round.find(r=>r.mold.name===selectedMold.name && r.vol===v);
+  if(existing) { existing.qty += casts; }
+  else { round.push({ mold: {...selectedMold}, vol: v, qty: casts, mat: selectedMat }); }
+  renderRound();
+
+  const btn = document.getElementById('addBtn');
+  btn.textContent = '✓ נוסף!';
+  btn.style.background = '#1e8449';
+  setTimeout(()=>{ btn.innerHTML='<i class="ti ti-plus" aria-hidden="true"></i> הוסף לסבב'; btn.style.background=''; }, 1200);
+}
+
+function removeFromRound(idx) {
+  round.splice(idx, 1);
+  renderRound();
+}
+
+function changeRoundQty(idx, d) {
+  round[idx].qty = Math.max(1, round[idx].qty + d);
+  renderRound();
+}
+
+function clearRound() {
+  round = [];
+  renderRound();
+}
+
+function renderRound() {
+  const card = document.getElementById('roundCard');
+  const list = document.getElementById('roundList');
+
+  if(!round.length){ card.classList.remove('has-items'); return; }
+  card.classList.add('has-items');
+
+  list.innerHTML = round.map((r,i)=>{
+    const thumb = r.mold.img&&r.mold.img.length>5
+      ? `<img src="${r.mold.img}" alt="${r.mold.name}">`
+      : `<i class="ti ti-box" style="font-size:18px;color:var(--text-dim)" aria-hidden="true"></i>`;
+    const w = (r.vol * r.qty * r.mat.w).toFixed(1);
+    const p = (r.vol * r.qty * r.mat.p).toFixed(1);
+    return `<div class="round-item">
+      <div class="round-thumb">${thumb}</div>
+      <div class="round-info">
+        <div class="round-name">${r.mold.name}</div>
+        <div class="round-sub" style="color:var(--primary)">${w}g מים</div>
+        <div class="round-sub" style="color:#e67e22">${p}g אבקה</div>
+      </div>
+      <div class="round-right">
+        <div class="round-qty-ctrl">
+          <button class="round-qty-btn" onclick="changeRoundQty(${i},-1)" aria-label="פחות">−</button>
+          <span class="round-qty-num">×${r.qty}</span>
+          <button class="round-qty-btn" onclick="changeRoundQty(${i},1)" aria-label="יותר">+</button>
+        </div>
+        <button class="round-del" onclick="removeFromRound(${i})" aria-label="הסר"><i class="ti ti-trash" aria-hidden="true"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const totW = round.reduce((s,r)=>s + r.vol*r.qty*r.mat.w, 0);
+  const totP = round.reduce((s,r)=>s + r.vol*r.qty*r.mat.p, 0);
+  document.getElementById('totalWater').textContent  = totW.toFixed(1);
+  document.getElementById('totalPowder').textContent = totP.toFixed(1);
+}
+
+/* ── Sheet ── */
+function openSheet() {
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  setTimeout(()=>document.getElementById('searchInput').focus(), 350);
+}
+function closeSheet() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+  document.getElementById('searchInput').value='';
+  filterMolds('');
+}
+
+/* ── Lightbox ── */
+function openLightbox() {
+  if(!selectedMold || !selectedMold.img || selectedMold.img.length<=5) return;
+  document.getElementById('lbImg').src = selectedMold.img;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
 }
 
 init();
