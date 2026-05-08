@@ -169,21 +169,19 @@
     }
     .vol-unit { font-size: 13px; color: var(--text-b); white-space: nowrap; flex-shrink: 0; }
 
-    /* ── Results ── */
-    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .res-card {
-      border-radius: var(--r-md); padding: 16px;
-      display: flex; flex-direction: column; gap: 6px;
-    }
-    .res-card.water { background: #eaf4fb; }
-    .res-card.powder { background: #fef9ee; }
-    .res-lbl { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-    .res-card.water  .res-lbl { color: var(--primary-dark); }
-    .res-card.powder .res-lbl { color: #b7770d; }
-    .res-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .res-val { font-size: 30px; font-weight: 700; line-height: 1; }
-    .res-card.water  .res-val { color: var(--primary); }
-    .res-card.powder .res-val { color: #e67e22; }
+    /* ── Results (merged into vol card) ── */
+    .vol-divider { height: 1px; background: var(--border-soft); margin: 14px 0 12px; }
+    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .res-cell { display: flex; flex-direction: column; gap: 4px; padding: 10px 4px; }
+    .res-cell.water { padding-left: 16px; border-left: 1px solid var(--border-soft); }
+    .res-cell.powder { padding-right: 16px; }
+    .res-lbl { font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .res-cell.water  .res-lbl { color: var(--primary-dark); }
+    .res-cell.powder .res-lbl { color: #b7770d; }
+    .res-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .res-val { font-size: 32px; font-weight: 700; line-height: 1.1; }
+    .res-cell.water  .res-val { color: var(--primary); }
+    .res-cell.powder .res-val { color: #e67e22; }
     .res-unit-sm { font-size: 12px; color: var(--text-b); font-weight: 400; }
 
     /* ── Loader ── */
@@ -363,19 +361,16 @@
         <input type="number" id="vol" class="vol-in" placeholder="0" inputmode="decimal">
         <span class="vol-unit">גרם</span>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="section-lbl">תוצאה</div>
+      <div class="vol-divider"></div>
       <div class="results">
-        <div class="res-card water">
+        <div class="res-cell water">
           <div class="res-lbl">
             <span class="res-dot" style="background:#2980b9"></span>מים
           </div>
           <span id="waterVal" class="res-val">—</span>
           <span class="res-unit-sm">גרם</span>
         </div>
-        <div class="res-card powder">
+        <div class="res-cell powder">
           <div class="res-lbl">
             <span class="res-dot" style="background:#e67e22"></span>אבקה
           </div>
