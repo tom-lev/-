@@ -27,13 +27,31 @@
       --shadow-primary: 0 4px 16px rgba(41,128,185,0.25);
       --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 24px;
     }
-    body { font-family: 'Heebo', system-ui, sans-serif; background: var(--bg); color: var(--text-h); min-height: 100vh; padding: 0 0 calc(70px + env(safe-area-inset-bottom, 0px)); direction: rtl; }
+    body { font-family: 'Heebo', system-ui, sans-serif; background: var(--bg); color: var(--text-h); min-height: 100vh; padding: 0 0 20px; direction: rtl; }
     .app { max-width: 480px; margin: 0 auto; padding: 0 14px; }
 
-    .header { text-align: center; padding: 28px 0 20px; }
-    .header-icon { width: 56px; height: 56px; background: #f0f8ff; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
-    .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
-    .header p  { font-size: 13px; color: var(--text-b); margin-top: 4px; }
+    /* Topbar */
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 14px 0 12px; }
+    .hamburger { width: 40px; height: 40px; border: none; background: var(--card); border-radius: var(--r-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--text-h); box-shadow: var(--shadow-sm); flex-shrink: 0; transition: background 0.15s; }
+    .hamburger:active { background: var(--primary-light); }
+    .topbar-title { font-size: 18px; font-weight: 700; }
+
+    /* Sidebar */
+    .sidebar-overlay { position: fixed; inset: 0; background: rgba(30,40,50,0.45); z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .sidebar-overlay.open { opacity: 1; pointer-events: all; }
+    .sidebar { position: fixed; top: 0; right: 0; bottom: 0; width: 260px; background: var(--card); z-index: 301; transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.32,0.72,0,1); display: flex; flex-direction: column; box-shadow: -4px 0 30px rgba(0,0,0,0.15); direction: rtl; }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-head { display: flex; align-items: center; gap: 12px; padding: 20px 16px 16px; border-bottom: 1px solid var(--border-soft); }
+    .sidebar-logo { font-size: 26px; }
+    .sidebar-name { font-size: 16px; font-weight: 700; flex: 1; }
+    .sidebar-close { width: 34px; height: 34px; border: none; background: var(--bg); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-b); font-family: inherit; transition: background 0.15s; }
+    .sidebar-close:active { background: #e0e0e0; }
+    .sidebar-nav { padding: 8px 0; }
+    .sidebar-nav-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; text-decoration: none; color: var(--text-h); font-size: 15px; font-weight: 500; transition: background 0.15s; }
+    .sidebar-nav-item i { font-size: 22px; color: var(--text-dim); }
+    .sidebar-nav-item.active { background: var(--primary-light); color: var(--primary); }
+    .sidebar-nav-item.active i { color: var(--primary); }
+    .sidebar-nav-item:not(.active):active { background: var(--bg); }
 
     .card { background: var(--card); border-radius: var(--r-xl); box-shadow: var(--shadow-md); padding: 16px; margin-bottom: 14px; overflow: hidden; }
     .section-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
@@ -57,12 +75,6 @@
     .spinner { width: 30px; height: 30px; border: 2.5px solid var(--border-soft); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Bottom nav */
-    .bottom-nav { position: fixed; bottom: 0; right: 0; left: 0; background: var(--card); border-top: 1px solid var(--border-soft); display: flex; z-index: 50; box-shadow: 0 -4px 20px rgba(0,0,0,0.06); padding-bottom: env(safe-area-inset-bottom, 0px); }
-    .bottom-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 12px; text-decoration: none; color: var(--text-dim); font-size: 10px; font-weight: 500; gap: 4px; transition: color 0.15s; font-family: inherit; }
-    .bottom-nav-item i { font-size: 22px; }
-    .bottom-nav-item.active { color: var(--primary); }
-
     /* Result items */
     .result-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
     .result-item:last-child { border-bottom: none; }
@@ -83,10 +95,9 @@
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <div class="header-icon">🧮</div>
-    <h1>אופטימיזציית אבקה</h1>
-    <p>מצא את שילוב התבניות שמנצל את האבקה בצורה הטובה ביותר</p>
+  <div class="topbar">
+    <button class="hamburger" onclick="openSidebar()" aria-label="תפריט"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
+    <span class="topbar-title">אופטימיזציית אבקה</span>
   </div>
 
   <div id="loader" class="loader"><div class="spinner"></div>מתחבר לנתונים...</div>
@@ -118,16 +129,25 @@
   </div>
 </div>
 
-<nav class="bottom-nav">
-  <a href="index.html" class="bottom-nav-item">
-    <i class="ti ti-calculator" aria-hidden="true"></i>
-    <span>מחשבון</span>
-  </a>
-  <a href="optimizer.html" class="bottom-nav-item active">
-    <i class="ti ti-sparkles" aria-hidden="true"></i>
-    <span>אופטימיזציה</span>
-  </a>
-</nav>
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <span class="sidebar-logo">🏺</span>
+    <span class="sidebar-name">קטלוג תבניות</span>
+    <button class="sidebar-close" onclick="closeSidebar()" aria-label="סגור"><i class="ti ti-x" aria-hidden="true"></i></button>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-nav-item">
+      <i class="ti ti-calculator" aria-hidden="true"></i>
+      <span>מחשבון יציקה</span>
+    </a>
+    <a href="optimizer.html" class="sidebar-nav-item active">
+      <i class="ti ti-sparkles" aria-hidden="true"></i>
+      <span>אופטימיזציית אבקה</span>
+    </a>
+  </nav>
+</div>
 
 <script>
 const MOLDS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=0&single=true&output=csv";
@@ -289,6 +309,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 init();
+
+function openSidebar() {
+  document.getElementById('sidebarOverlay').classList.add('open');
+  document.getElementById('sidebar').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.getElementById('sidebar').classList.remove('open');
+}
 </script>
 </body>
 </html>
