@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>אופטימיזציית אבקה</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --bg: #f4f7f6;
+      --card: #ffffff;
+      --surface: #f8fafa;
+      --primary: #2980b9;
+      --primary-light: #eaf4fb;
+      --primary-dark: #1f6692;
+      --accent: #27ae60;
+      --accent-light: #eafaf1;
+      --text-h: #333333;
+      --text-b: #666666;
+      --text-dim: #aaaaaa;
+      --border: rgba(0,0,0,0.07);
+      --border-soft: rgba(0,0,0,0.10);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-primary: 0 4px 16px rgba(41,128,185,0.25);
+      --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 24px;
+    }
+    body { font-family: 'Heebo', system-ui, sans-serif; background: var(--bg); color: var(--text-h); min-height: 100vh; padding: 0 0 80px; direction: rtl; }
+    .app { max-width: 480px; margin: 0 auto; padding: 0 14px; }
+
+    .header { text-align: center; padding: 28px 0 20px; }
+    .header-icon { width: 56px; height: 56px; background: #f0f8ff; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
+    .header p  { font-size: 13px; color: var(--text-b); margin-top: 4px; }
+
+    .card { background: var(--card); border-radius: var(--r-xl); box-shadow: var(--shadow-md); padding: 16px; margin-bottom: 14px; overflow: hidden; }
+    .section-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { font-size: 13px; padding: 8px 16px; border-radius: 50px; border: 1.5px solid var(--border-soft); background: var(--surface); color: var(--text-b); cursor: pointer; transition: all 0.18s; font-family: inherit; line-height: 1; min-height: 44px; display: flex; align-items: center; box-shadow: var(--shadow-sm); }
+    .chip:active { transform: scale(0.96); }
+    .chip.on { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; box-shadow: var(--shadow-primary); }
+
+    .vol-row { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--border-soft); border-radius: var(--r-md); padding: 0 12px; min-height: 60px; width: 100%; background: var(--surface); transition: border-color 0.18s, box-shadow 0.18s; box-shadow: var(--shadow-sm); overflow: hidden; }
+    .vol-row:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(41,128,185,0.12); }
+    .vol-lbl { font-size: 13px; color: var(--text-b); white-space: nowrap; flex-shrink: 0; }
+    .vol-in { flex: 1; border: none; outline: none; font-size: 24px; font-weight: 600; color: var(--text-h); font-family: inherit; text-align: center; background: transparent; direction: ltr; min-height: 44px; min-width: 0; width: 100%; }
+    .vol-unit { font-size: 13px; color: var(--text-b); white-space: nowrap; flex-shrink: 0; }
+
+    .calc-btn { width: 100%; margin-top: 12px; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: var(--r-md); font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-primary); transition: all 0.18s; }
+    .calc-btn:active { transform: scale(0.98); opacity: 0.9; }
+    .calc-btn:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
+
+    .loader { text-align: center; padding: 60px 0; color: var(--text-b); font-size: 14px; }
+    .spinner { width: 30px; height: 30px; border: 2.5px solid var(--border-soft); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Bottom nav */
+    .bottom-nav { position: fixed; bottom: 0; right: 0; left: 0; background: var(--card); border-top: 1px solid var(--border-soft); display: flex; z-index: 50; box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
+    .bottom-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 12px; text-decoration: none; color: var(--text-dim); font-size: 10px; font-weight: 500; gap: 4px; transition: color 0.15s; font-family: inherit; }
+    .bottom-nav-item i { font-size: 22px; }
+    .bottom-nav-item.active { color: var(--primary); }
+
+    /* Result items */
+    .result-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .result-item:last-child { border-bottom: none; }
+    .result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .result-rank { font-size: 13px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 3px 9px; border-radius: 50px; flex-shrink: 0; }
+    .result-bar-track { flex: 1; height: 7px; background: var(--border-soft); border-radius: 4px; overflow: hidden; }
+    .result-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #2ecc71); border-radius: 4px; transition: width 0.6s cubic-bezier(0.22,1,0.36,1); }
+    .result-pct { font-size: 13px; font-weight: 700; color: var(--accent); min-width: 40px; text-align: left; flex-shrink: 0; }
+    .result-molds { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .result-mold-tag { font-size: 12px; font-weight: 600; padding: 4px 11px; background: var(--surface); border: 1.5px solid var(--border-soft); border-radius: 50px; color: var(--text-h); }
+    .result-stats { display: flex; gap: 16px; font-size: 12px; color: var(--text-b); }
+    .result-stats strong { font-weight: 600; }
+    .result-leftover { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+    .empty-state { text-align: center; padding: 32px 0; color: var(--text-dim); font-size: 14px; }
+    .empty-state i { font-size: 36px; display: block; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-icon">🧮</div>
+    <h1>אופטימיזציית אבקה</h1>
+    <p>מצא את שילוב התבניות שמנצל את האבקה בצורה הטובה ביותר</p>
+  </div>
+
+  <div id="loader" class="loader"><div class="spinner"></div>מתחבר לנתונים...</div>
+
+  <div id="main" style="display:none">
+
+    <div class="card">
+      <div class="section-lbl">סוג אבקה</div>
+      <div id="chips" class="chips"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-lbl">כמות אבקה זמינה</div>
+      <div class="vol-row">
+        <span class="vol-lbl">כמות</span>
+        <input type="number" id="powderAmount" class="vol-in" placeholder="0" inputmode="decimal" min="1">
+        <span class="vol-unit">גרם</span>
+      </div>
+      <button class="calc-btn" id="calcBtn" onclick="runCalc()">
+        <i class="ti ti-sparkles" aria-hidden="true"></i> חשב שילובים
+      </button>
+    </div>
+
+    <div class="card" id="resultsCard" style="display:none">
+      <div class="section-lbl" id="resultsLabel">שילובים מומלצים</div>
+      <div id="resultsList"></div>
+    </div>
+
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="index.html" class="bottom-nav-item">
+    <i class="ti ti-calculator" aria-hidden="true"></i>
+    <span>מחשבון</span>
+  </a>
+  <a href="optimizer.html" class="bottom-nav-item active">
+    <i class="ti ti-sparkles" aria-hidden="true"></i>
+    <span>אופטימיזציה</span>
+  </a>
+</nav>
+
+<script>
+const MOLDS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=0&single=true&output=csv";
+const MATS_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNkPRkFQfmrcT104MzjqRSo48J2z2MAnDfn_u_PE-WetlpTHOzajlLkBAosCG0Z5wiW-jwWGfnmaph/pub?gid=2012837645&single=true&output=csv";
+
+let allMolds = [], selectedMat = null;
+
+function parseCSV(text) {
+  return text.split('\n').slice(1)
+    .map(r => r.split(',').map(c => c.replace(/["']/g,'').trim()))
+    .filter(r => r.some(c => c));
+}
+
+async function init() {
+  try {
+    const [r1,r2] = await Promise.all([fetch(MOLDS_URL), fetch(MATS_URL)]);
+    const [t1,t2] = await Promise.all([r1.text(), r2.text()]);
+
+    allMolds = parseCSV(t1)
+      .map(r => ({name:r[0], vol:parseFloat(r[1]), img:r[2]||'', link:r[3]||''}))
+      .filter(m => m.name && !isNaN(m.vol))
+      .sort((a,b) => a.name.localeCompare(b.name,'he'));
+
+    const mats = parseCSV(t2)
+      .map(r => ({name:r[0], w:parseFloat(r[1]), p:parseFloat(r[2])}))
+      .filter(m => m.name && !isNaN(m.w));
+
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+
+    const chipsEl = document.getElementById('chips');
+    mats.forEach((m,i) => {
+      const b = document.createElement('button');
+      b.className = 'chip' + (i===0?' on':'');
+      b.textContent = m.name;
+      if(i===0) selectedMat = m;
+      b.onclick = () => {
+        chipsEl.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+        b.classList.add('on');
+        selectedMat = m;
+      };
+      chipsEl.appendChild(b);
+    });
+  } catch(e) {
+    document.getElementById('loader').innerHTML = '<i class="ti ti-alert-circle" style="font-size:26px;color:#e74c3c;display:block;margin:0 auto 8px"></i>שגיאה בטעינת נתונים';
+  }
+}
+
+function findBestCombinations(target, mat) {
+  // Powder needed per mold = vol * mat.p
+  const items = allMolds
+    .map(m => ({
+      mold: m,
+      powder: m.vol * mat.p,
+      water:  m.vol * mat.w
+    }))
+    .filter(item => item.powder > 0 && item.powder <= target)
+    .sort((a,b) => b.powder - a.powder); // descending for better pruning
+
+  if(!items.length) return [];
+
+  const results = [];
+
+  function search(startIdx, current, remainingPowder) {
+    if(current.length > 0) {
+      const totalPowder = target - remainingPowder;
+      const totalWater  = current.reduce((s,i) => s + i.water, 0);
+      results.push({
+        molds: current.map(i => i.mold),
+        totalPowder,
+        totalWater,
+        leftover: remainingPowder,
+        pct: (totalPowder / target) * 100
+      });
+    }
+
+    if(current.length >= 4) return;
+
+    for(let i = startIdx; i < items.length; i++) {
+      if(items[i].powder > remainingPowder) continue;
+      current.push(items[i]);
+      search(i + 1, current, remainingPowder - items[i].powder);
+      current.pop();
+    }
+  }
+
+  search(0, [], target);
+  results.sort((a,b) => a.leftover - b.leftover);
+  return results.slice(0, 5);
+}
+
+function runCalc() {
+  const target = parseFloat(document.getElementById('powderAmount').value) || 0;
+  if(!target || target <= 0 || !selectedMat) return;
+
+  const btn = document.getElementById('calcBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div style="width:20px;height:20px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.75s linear infinite;display:inline-block"></div>';
+
+  // yield to browser to render the loading state before running the algorithm
+  setTimeout(() => {
+    const results = findBestCombinations(target, selectedMat);
+    renderResults(results, target);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-sparkles" aria-hidden="true"></i> חשב שילובים';
+  }, 10);
+}
+
+function renderResults(results, target) {
+  const card  = document.getElementById('resultsCard');
+  const list  = document.getElementById('resultsList');
+  const label = document.getElementById('resultsLabel');
+
+  card.style.display = 'block';
+
+  if(!results.length) {
+    label.textContent = 'לא נמצאו שילובים';
+    list.innerHTML = `<div class="empty-state"><i class="ti ti-mood-sad"></i>כל התבניות דורשות יותר אבקה מהכמות שהוזנה</div>`;
+    return;
+  }
+
+  label.textContent = `${results.length} שילובים מומלצים`;
+
+  list.innerHTML = results.map((r,i) => {
+    const pct      = r.pct.toFixed(1);
+    const moldTags = r.molds.map(m => `<span class="result-mold-tag">${m.name}</span>`).join('');
+    const count    = r.molds.length === 1 ? 'תבנית אחת' : `${r.molds.length} תבניות`;
+    return `<div class="result-item">
+      <div class="result-header">
+        <span class="result-rank">#${i+1}</span>
+        <div class="result-bar-track">
+          <div class="result-bar" style="width:0%" data-pct="${pct}"></div>
+        </div>
+        <span class="result-pct">${pct}%</span>
+      </div>
+      <div class="result-molds">${moldTags}</div>
+      <div class="result-stats">
+        <span><i class="ti ti-droplet" style="color:var(--primary);font-size:13px;vertical-align:middle"></i> מים: <strong>${r.totalWater.toFixed(1)}g</strong></span>
+        <span><i class="ti ti-circle" style="color:#e67e22;font-size:13px;vertical-align:middle"></i> אבקה: <strong>${r.totalPowder.toFixed(1)}g</strong></span>
+      </div>
+      <div class="result-leftover">${count} · נשאר ${r.leftover.toFixed(1)}g אבקה</div>
+    </div>`;
+  }).join('');
+
+  // Animate bars after render
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.result-bar[data-pct]').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  });
+
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('powderAmount').addEventListener('keydown', e => {
+    if(e.key === 'Enter') runCalc();
+  });
+});
+
+init();
+</script>
+</body>
+</html>

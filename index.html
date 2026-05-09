@@ -28,6 +28,12 @@
       --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 24px;
     }
     body { font-family: 'Heebo', system-ui, sans-serif; background: var(--bg); color: var(--text-h); min-height: 100vh; padding: 0 0 80px; direction: rtl; }
+
+    /* Bottom nav */
+    .bottom-nav { position: fixed; bottom: 0; right: 0; left: 0; background: var(--card); border-top: 1px solid var(--border-soft); display: flex; z-index: 50; box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
+    .bottom-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0 12px; text-decoration: none; color: var(--text-dim); font-size: 10px; font-weight: 500; gap: 4px; transition: color 0.15s; font-family: inherit; }
+    .bottom-nav-item i { font-size: 22px; }
+    .bottom-nav-item.active { color: var(--primary); }
     .app { max-width: 480px; margin: 0 auto; padding: 0 14px; }
 
     .header { text-align: center; padding: 28px 0 20px; }
@@ -276,6 +282,18 @@
   </div>
   <div class="sheet-list" id="sheetList"></div>
 </div>
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <a href="index.html" class="bottom-nav-item active">
+    <i class="ti ti-calculator" aria-hidden="true"></i>
+    <span>מחשבון</span>
+  </a>
+  <a href="optimizer.html" class="bottom-nav-item">
+    <i class="ti ti-sparkles" aria-hidden="true"></i>
+    <span>אופטימיזציה</span>
+  </a>
+</nav>
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
